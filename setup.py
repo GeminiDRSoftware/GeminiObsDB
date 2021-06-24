@@ -10,8 +10,7 @@ setup(
     #author = 'Paul Hirst',
     #author_email = 'phirst@gemini.edu',
     license = 'License :: OSI Approved :: BSD License',
-    packages = ['utils',
-                'gemini_obs_db'],
+    packages = ['gemini_obs_db', ],
     # package_dir = {'gemini_calmgr': 'src'},
     install_requires = ['sqlalchemy >= 0.9.9', ]  # , 'pyfits', 'numpy']
 )
