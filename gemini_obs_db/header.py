@@ -11,29 +11,31 @@ import dateutil.parser
 import datetime
 import types
 
-from gemini_instruments.gemini import AstroDataGemini
+# from gemini_instruments.gemini import AstroDataGemini
 from . import Base
 from .diskfile import DiskFile
 
-from ..gemini_metadata_utils import GeminiProgram, procmode_codes, gemini_procmode
+from .utils.gemini_metadata_utils import GeminiProgram, procmode_codes, gemini_procmode
 
-from ..gemini_metadata_utils import ratodeg
-from ..gemini_metadata_utils import dectodeg
-from ..gemini_metadata_utils import dmstodeg
-from ..gemini_metadata_utils import gemini_observation_type
-from ..gemini_metadata_utils import gemini_telescope
-from ..gemini_metadata_utils import gemini_observation_class
-from ..gemini_metadata_utils import gemini_instrument
-from ..gemini_metadata_utils import gemini_gain_settings
-from ..gemini_metadata_utils import gemini_readspeed_settings
-from ..gemini_metadata_utils import gemini_welldepth_settings
-from ..gemini_metadata_utils import gemini_readmode_settings
-from ..gemini_metadata_utils import site_monitor
+from .utils.gemini_metadata_utils import ratodeg
+from .utils.gemini_metadata_utils import dectodeg
+from .utils.gemini_metadata_utils import dmstodeg
+from .utils.gemini_metadata_utils import gemini_observation_type
+from .utils.gemini_metadata_utils import gemini_telescope
+from .utils.gemini_metadata_utils import gemini_observation_class
+from .utils.gemini_metadata_utils import gemini_instrument
+from .utils.gemini_metadata_utils import gemini_gain_settings
+from .utils.gemini_metadata_utils import gemini_readspeed_settings
+from .utils.gemini_metadata_utils import gemini_welldepth_settings
+from .utils.gemini_metadata_utils import gemini_readmode_settings
+from .utils.gemini_metadata_utils import site_monitor
 
 from astropy import wcs as pywcs
 from astropy.wcs import SingularMatrixError
 from astropy.io import fits
 
+
+# This is a lingering circular dependency on DRAGONS
 import astrodata               # For astrodata errors
 import gemini_instruments
 try:
@@ -41,7 +43,7 @@ try:
 except:
     pass
 
-from ..gemini_metadata_utils import obs_types, obs_classes, reduction_states
+from .utils.gemini_metadata_utils import obs_types, obs_classes, reduction_states
 
 
 # ------------------------------------------------------------------------------

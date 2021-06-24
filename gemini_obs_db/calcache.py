@@ -3,7 +3,7 @@ from sqlalchemy import Integer, BigInteger, SmallInteger, Enum, DateTime
 
 from . import Base
 
-from ..gemini_metadata_utils import cal_types
+from .utils.gemini_metadata_utils import cal_types
 
 CALTYPE_ENUM = Enum(*cal_types, name='caltype')
 
