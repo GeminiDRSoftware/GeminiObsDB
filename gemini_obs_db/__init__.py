@@ -15,7 +15,7 @@ from contextlib import contextmanager
 
 
 __all__ = ["fits_database", "fits_database_pool_size", "fits_database_max_overflow",
-           "pg_db", "sessionfactory"]
+           "pg_db", "sessionfactory", "session_scope"]
 
 from .db_config import fits_database, fits_database_pool_size, fits_database_max_overflow
 
