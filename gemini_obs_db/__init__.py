@@ -11,10 +11,10 @@ from sqlalchemy.sql.sqltypes import String, Date, DateTime, NullType
 from datetime import datetime, date
 from contextlib import contextmanager
 
-# from ..fits_storage_config import fits_database, fits_database_pool_size, fits_database_max_overflow
+__version__ = '1.0.0.dev'
 
 
-__all__ = ["fits_database", "fits_database_pool_size", "fits_database_max_overflow",
+__all__ = ["__version__", "fits_database", "fits_database_pool_size", "fits_database_max_overflow",
            "pg_db", "sessionfactory", "session_scope"]
 
 from .db_config import fits_database, fits_database_pool_size, fits_database_max_overflow
