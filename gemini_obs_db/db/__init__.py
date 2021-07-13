@@ -90,7 +90,7 @@ def compiled_statement(stmt):
 
     Parameters
     ----------
-    stmt : :class:`~sqlalchemy.orm.statement.Statement
+    stmt : :class:`~sqlalchemy.orm.statement.Statement`
 
     Returns
     -------
