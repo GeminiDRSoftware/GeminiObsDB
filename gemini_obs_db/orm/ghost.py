@@ -4,7 +4,7 @@ from sqlalchemy.orm import relation
 
 from .header import Header
 
-from . import Base
+from gemini_obs_db.orm import Base
 
 
 __all__ = ["Ghost"]
@@ -24,6 +24,13 @@ RESOLUTION_ENUM = Enum(*RESOLUTIONS, name='ghost_resolution')
 class Ghost(Base):
     """
     This is the ORM object for the GHOST details.
+
+    Parameters
+    ----------
+    header : :class:`~gemini_obs_db.orm.header.Header`
+        Corresponding header for the observation
+    ad : :class:`astrodata.core.AstroData`
+        AstroData object to load Ghost information from
     """
     __tablename__ = 'ghost'
 
@@ -50,7 +57,7 @@ class Ghost(Base):
 
         Parameters
         ----------
-        header : :class:`~gemini_obs_db.header.Header`
+        header : :class:`~gemini_obs_db.orm.header.Header`
             Corresponding header for the observation
         ad : :class:`astrodata.core.AstroData`
             AstroData object to load Ghost information from

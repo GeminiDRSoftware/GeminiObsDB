@@ -1,34 +1,34 @@
-"""
-This module provides various utility functions for create_tables.py
-in the Fits Storage System.
-"""
-from . import pg_db
-from .file import File
-from .diskfile import DiskFile
-from .header import Header
-from .gmos import Gmos
-from .niri import Niri
-from .gnirs import Gnirs
-from .nifs import Nifs
-from .f2 import F2
-from .ghost import Ghost
-from .gpi import Gpi
-from .gsaoi import Gsaoi
-from .nici import Nici
-from .michelle import Michelle
-from .calcache import CalCache
+# This module provides various utility functions for create_tables.py
+# in the Fits Storage System.
+from sqlalchemy.orm import Session
+
+from gemini_obs_db.db import pg_db
+from gemini_obs_db.orm.file import File
+from gemini_obs_db.orm.diskfile import DiskFile
+from gemini_obs_db.orm.header import Header
+from gemini_obs_db.orm.gmos import Gmos
+from gemini_obs_db.orm.niri import Niri
+from gemini_obs_db.orm.gnirs import Gnirs
+from gemini_obs_db.orm.nifs import Nifs
+from gemini_obs_db.orm.f2 import F2
+from gemini_obs_db.orm.ghost import Ghost
+from gemini_obs_db.orm.gpi import Gpi
+from gemini_obs_db.orm.gsaoi import Gsaoi
+from gemini_obs_db.orm.nici import Nici
+from gemini_obs_db.orm.michelle import Michelle
+from gemini_obs_db.orm.calcache import CalCache
 
 
 __all__ = ["create_tables", "drop_tables"]
 
 
-def create_tables(session):
+def create_tables(session: Session):
     """
     Creates the database tables
 
     Parameters
     ----------
-    session : :class:`~sqlalchemy.orm.session.Session`
+    session : :class:`~sqlalchemy.orm.Session`
         Database session to create tables in
     """
     # Create the tables
@@ -48,13 +48,13 @@ def create_tables(session):
     CalCache.metadata.create_all(bind=pg_db)
 
 
-def drop_tables(session):
+def drop_tables(session: Session):
     """
     Drops all the database tables. Very unsubtle. Use with caution
 
     Parameters
     ----------
-    session : :class:`~sqlalchemy.orm.session.Session`
+    session : :class:`~sqlalchemy.orm.Session`
         Database session to drop tables in
     """
     File.metadata.drop_all(bind=pg_db)

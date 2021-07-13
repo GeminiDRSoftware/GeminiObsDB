@@ -2,7 +2,7 @@ from sqlalchemy import Column
 from sqlalchemy import Integer, Text
 from sqlalchemy.orm import relationship
 
-from . import Base
+from gemini_obs_db.orm import Base
 
 
 __all__ = ["File"]
@@ -16,6 +16,10 @@ class File(Base):
     be the actual filename - the definitive filename is in the diskfile table,
     when we have a compressed (bzip2) file, we trim off the .bz2 here.
 
+    Parameters
+    ----------
+    filename : str
+        Name of the file for the record
     """
     __tablename__ = 'file'
 
@@ -37,11 +41,11 @@ class File(Base):
 
     def __repr__(self):
         """
-        Get a string representation of the :class:`~File` object
+        Get a string representation of the :class:`~gemini_obs_db.orm.file.File` object
 
         Returns
         -------
-        str : string representation of the :class:`~File`
+        str : string representation of the :class:`~gemini_obs_db.orm.file.File`
         """
         return "<File('%s', '%s')>" % (self.id, self.name)
 

@@ -11,23 +11,23 @@ import dateutil.parser
 import datetime
 import types
 
-from . import Base
-from .diskfile import DiskFile
+from gemini_obs_db.orm import Base
+from gemini_obs_db.orm.diskfile import DiskFile
 
-from .utils.gemini_metadata_utils import GeminiProgram, procmode_codes, gemini_procmode
+from gemini_obs_db.utils.gemini_metadata_utils import GeminiProgram, procmode_codes, gemini_procmode
 
-from .utils.gemini_metadata_utils import ratodeg
-from .utils.gemini_metadata_utils import dectodeg
-from .utils.gemini_metadata_utils import dmstodeg
-from .utils.gemini_metadata_utils import gemini_observation_type
-from .utils.gemini_metadata_utils import gemini_telescope
-from .utils.gemini_metadata_utils import gemini_observation_class
-from .utils.gemini_metadata_utils import gemini_instrument
-from .utils.gemini_metadata_utils import gemini_gain_settings
-from .utils.gemini_metadata_utils import gemini_readspeed_settings
-from .utils.gemini_metadata_utils import gemini_welldepth_settings
-from .utils.gemini_metadata_utils import gemini_readmode_settings
-from .utils.gemini_metadata_utils import site_monitor
+from gemini_obs_db.utils.gemini_metadata_utils import ratodeg
+from gemini_obs_db.utils.gemini_metadata_utils import dectodeg
+from gemini_obs_db.utils.gemini_metadata_utils import dmstodeg
+from gemini_obs_db.utils.gemini_metadata_utils import gemini_observation_type
+from gemini_obs_db.utils.gemini_metadata_utils import gemini_telescope
+from gemini_obs_db.utils.gemini_metadata_utils import gemini_observation_class
+from gemini_obs_db.utils.gemini_metadata_utils import gemini_instrument
+from gemini_obs_db.utils.gemini_metadata_utils import gemini_gain_settings
+from gemini_obs_db.utils.gemini_metadata_utils import gemini_readspeed_settings
+from gemini_obs_db.utils.gemini_metadata_utils import gemini_welldepth_settings
+from gemini_obs_db.utils.gemini_metadata_utils import gemini_readmode_settings
+from gemini_obs_db.utils.gemini_metadata_utils import site_monitor
 
 from astropy import wcs as pywcs
 from astropy.wcs import SingularMatrixError
@@ -39,13 +39,18 @@ __all__ = ["Header"]
 
 # This is a lingering circular dependency on DRAGONS
 import astrodata               # For astrodata errors
-import gemini_instruments
+
+# ***************************************************************
+# DO NOT REMOVE THIS IMPORT, IT INITIALIZES THE ASTRODATA FACTORY
+# noinspection PyUnresolvedReferences
+import gemini_instruments      # pylint: disable=unused-import
+
 try:
     import ghost_instruments
 except:
     pass
 
-from .utils.gemini_metadata_utils import obs_types, obs_classes, reduction_states
+from gemini_obs_db.utils.gemini_metadata_utils import obs_types, obs_classes, reduction_states
 
 
 # ------------------------------------------------------------------------------
@@ -167,10 +172,13 @@ class Header(Base):
     """
     This is the ORM class for the Header table.
 
+    Parameters
+    ----------
+    diskfile : :class:`~gemini_obs_db.orm.diskfile.DiskFile`
+        The file this header is taken from
     """
     __tablename__ = 'header'
 
-    
     id = Column(Integer, primary_key=True)
     diskfile_id = Column(Integer, ForeignKey('diskfile.id'), nullable=False, index=True)
     diskfile = relation(DiskFile, order_by=id)

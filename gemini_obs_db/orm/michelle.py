@@ -2,7 +2,7 @@ from sqlalchemy import Column, ForeignKey
 from sqlalchemy import Integer, Enum
 from sqlalchemy.orm import relation
 
-from . import Base
+from gemini_obs_db.orm import Base
 from .header import Header
 
 
@@ -36,6 +36,12 @@ class Michelle(Base):
     """
     This is the ORM object for the MICHELLE details.
 
+    Parameters
+    ----------
+    header : :class:`~gemini_obs_db.orm.header.Header`
+        Header record linked to this one
+    ad : :class:`astrodata.AstroData`
+        AstroData object to read Michelle data from
     """
     __tablename__ = 'michelle'
 
@@ -54,7 +60,7 @@ class Michelle(Base):
 
         Parameters
         ----------
-        header : :class:`~header.Header`
+        header : :class:`~gemini_obs_db.orm.header.Header`
             Header record linked to this one
         ad : :class:`astrodata.AstroData`
             AstroData object to read Michelle data from

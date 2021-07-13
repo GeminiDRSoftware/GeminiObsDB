@@ -1,23 +1,33 @@
-import json
 from datetime import datetime
 
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy import Integer, Text, DateTime, String
+from sqlalchemy.orm import relationship
 
-from . import Base
+from gemini_obs_db.orm import Base
 
 
 __all__ = ["Provenance", "ProvenanceHistory", "ingest_provenance"]
 
+from .diskfile import DiskFile
 
-# matches the value in DRAGONS
-# avoiding import within orm to avoid any circular referencing that could happen in future
-PROVENANCE_DATE_FORMAT="%Y-%m-%d %H:%M:%S.%f"
+PROVENANCE_DATE_FORMAT = "%Y-%m-%d %H:%M:%S.%f"
 
 
 class Provenance(Base):
     """
     This is the ORM class for storing provenance data found in the FITS file.
+
+    Parameters
+    ----------
+    timestamp : datetime
+        Time of the provenance occuring
+    filename : str
+        Name of the file involved
+    md5 : str
+        MD5 Checksum of the input file
+    primitive : str
+        Name of the DRAGONS primitive that was performed
     """
     __tablename__ = 'provenance'
 
@@ -27,6 +37,7 @@ class Provenance(Base):
     md5 = Column(Text)
     primitive = Column(String(128))
     diskfile_id = Column(Integer, ForeignKey('diskfile.id'))
+    diskfile = relationship("DiskFile", back_populates="provenance")
 
     def __init__(self, timestamp: datetime, filename: str, md5: str, primitive: str):
         """
@@ -61,6 +72,7 @@ class ProvenanceHistory(Base):
     primitive = Column(String(128))
     args = Column(Text)
     diskfile_id = Column(Integer, ForeignKey('diskfile.id'))
+    diskfile = relationship("DiskFile", back_populates="provenance_history")
 
     def __init__(self, timestamp_start: datetime, timestamp_end: datetime, primitive: str, args: str):
         """
@@ -86,7 +98,7 @@ class ProvenanceHistory(Base):
         self.args = args
 
 
-def ingest_provenance(diskfile):
+def ingest_provenance(diskfile: DiskFile):
     """
     Ingest the provenance data from the diskfile into the database.
 
@@ -95,7 +107,7 @@ def ingest_provenance(diskfile):
 
     Parameters
     ----------
-    diskfile : :class:`~gemini_obs_db.diskfile.Diskfile`
+    diskfile : :class:`~gemini_obs_db.orm.diskfile.Diskfile`
         diskfile to read provenance data out of
 
     Returns

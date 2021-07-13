@@ -1,12 +1,13 @@
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy import Integer, Text
+from sqlalchemy.orm import relationship
 
-from . import Base
+from gemini_obs_db.orm import Base
 
 
 __all__ = ["Preview"]
 
-from .diskfile import DiskFile
+from gemini_obs_db.orm.diskfile import DiskFile
 
 
 class Preview(Base):
@@ -14,12 +15,19 @@ class Preview(Base):
     This is the ORM object for the preview table. Use this to find preview (jpeg)
     files for a given diskfile.
 
+    Parameters
+    ----------
+    diskfile : :class:`~gemini_obs_db.orm.diskfile.DiskFile`
+        DiskFile record to store preview for
+    preview_filename : str
+        Filename of the preview file
     """
     __tablename__ = 'preview'
 
     id = Column(Integer, primary_key=True)
     diskfile_id = Column(Integer, ForeignKey('diskfile.id'), nullable=False,
                          index=True)
+    diskfile = relationship("DiskFile", back_populates="previews")
     filename = Column(Text)
 
     def __init__(self, diskfile: DiskFile, preview_filename: str):
@@ -28,7 +36,7 @@ class Preview(Base):
 
         Parameters
         ----------
-        diskfile : :class:`~gemini_obs_db.diskfile.DiskFile`
+        diskfile : :class:`~gemini_obs_db.orm.diskfile.DiskFile`
             DiskFile record to store preview for
         preview_filename : str
             Filename of the preview file

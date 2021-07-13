@@ -2,9 +2,9 @@ from sqlalchemy import Column, ForeignKey
 from sqlalchemy import Integer, Text
 from sqlalchemy.orm import relation
 
-from .header import Header
+from gemini_obs_db.orm.header import Header
 
-from . import Base
+from gemini_obs_db.orm import Base
 
 
 __all__ = ["F2"]
@@ -12,8 +12,14 @@ __all__ = ["F2"]
 
 class F2(Base):
     """
-    This is the ORM object for the F2 details
+    This is the object for the F2 observation details
 
+    Parameters
+    ----------
+    header : :class:`~gemini_obs_db.orm.header.Header`
+        Header record corresponding to this F2 instrument data record
+    ad : :class:`astrodata.Astrodata`
+        Astrodata object to parse for additional F2 data
     """
     __tablename__ = 'f2'
 
@@ -28,11 +34,11 @@ class F2(Base):
 
     def __init__(self, header: Header, ad):
         """
-        Create an F2 record with the given :class:`~header.Header` and data from :class:`astrodata.Astrodata`
+        Create an F2 record with the given :class:`~gemini_obs_db.orm.header.Header` and data from :class:`astrodata.Astrodata`
 
         Parameters
         ----------
-        header : :class:`~header.Header`
+        header : :class:`~gemini_obs_db.orm.header.Header`
             Header record corresponding to this F2 instrument data record
         ad : :class:`astrodata.Astrodata`
             Astrodata object to parse for additional F2 data

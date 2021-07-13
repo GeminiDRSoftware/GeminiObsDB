@@ -1,9 +1,9 @@
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy import Integer, BigInteger, SmallInteger, Enum
 
-from . import Base
+from gemini_obs_db.orm import Base
 
-from .utils.gemini_metadata_utils import cal_types
+from gemini_obs_db.utils.gemini_metadata_utils import cal_types
 
 
 __all__ = ["CalCache"]
@@ -24,6 +24,16 @@ class CalCache(Base):
     rank of the calibration - ie 0 is the best one (generally closest in time),
     1 is next best, etc caltype is the calibration type.
 
+    Parameters
+    ----------
+    obs_hid : int
+        ID of the :class:`~gemini_obs_db.orm.header.Header` record for the data being linked
+    cal_hid : int
+        ID of the :class:`~gemini_obs_db.orm.header.Header` record for the calibration
+    caltype : `CALTYPE_ENUM`
+        type of calibration being linked
+    rank : int
+        rank of this calibrtion (relative to other options, lower is better)
     """
     __tablename__ = 'calcache'
 

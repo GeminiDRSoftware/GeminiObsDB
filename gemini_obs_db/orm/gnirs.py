@@ -2,7 +2,7 @@ from sqlalchemy import Column, ForeignKey
 from sqlalchemy import Integer, Text, Enum
 from sqlalchemy.orm import relation
 
-from . import Base
+from gemini_obs_db.orm import Base
 from .header import Header
 
 
@@ -22,6 +22,12 @@ class Gnirs(Base):
     """
     This is the ORM object for the GNIRS details.
 
+    Parameters
+    ----------
+    header : :class:`~gemini_obs_db.orm.header.Header`
+        Header corresponding to this record
+    ad : :class:`~astrodata.core.AstroData`
+        AstroData object to read GNIRS information from
     """
     __tablename__ = 'gnirs'
 
@@ -41,7 +47,7 @@ class Gnirs(Base):
 
         Parameters
         ----------
-        header : :class:`~header.Header`
+        header : :class:`~gemini_obs_db.orm.header.Header`
             Header corresponding to this record
         ad : :class:`~astrodata.core.AstroData`
             AstroData object to read GNIRS information from

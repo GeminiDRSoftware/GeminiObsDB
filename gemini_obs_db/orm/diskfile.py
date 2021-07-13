@@ -1,19 +1,17 @@
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy import BigInteger, Integer, Text, Boolean, DateTime
-from sqlalchemy.orm import relation
+from sqlalchemy.orm import relation, relationship
 
 import os
 import datetime
 import re
 
-from .provenance import Provenance, ProvenanceHistory
-from .utils.hashes import md5sum, md5sum_size_bz2
+from gemini_obs_db.utils.hashes import md5sum, md5sum_size_bz2
 
-from . import Base
+from gemini_obs_db.orm import Base
 from .file import File
-from .preview import Preview
 
-from .db_config import storage_root, z_staging_area
+from gemini_obs_db.db.db_config import storage_root, z_staging_area
 
 
 __all__ = ["DiskFile"]
@@ -68,13 +66,25 @@ class DiskFile(Base):
     file_md5 and file_size are those of the actual file. data_md5 and data_size
     correspond to the uncompressed data if the file is compressed, and should be
     the same as for file_md5/file_size for uncompressed files.
+
+    Parameters
+    ----------
+    given_file : :class:`~gemini_obs_db.orm.file.File`
+        A :class:`~gemini_obs_db.orm.file.File` record to associate with
+    given_filename : str
+        The name of the file
+    path : str
+        The path of the file within the `storage_root`
+    compressed : bool
+        True if the file is compressed.  It's also considered compressed if the filename ends in .bz2
     """
+
     __tablename__ = 'diskfile'
 
     id = Column(Integer, primary_key=True)
     file_id = Column(Integer, ForeignKey('file.id'), nullable=False, index=True)
     file = relation(File, order_by=id)
-    previews = relation("Preview", order_by=Preview.filename)
+    previews = relationship("Preview", back_populates="diskfile", order_by="filename")
 
     filename = Column(Text, index=True)
     path = Column(Text)
@@ -96,8 +106,8 @@ class DiskFile(Base):
 
     datafile_timestamp = Column(DateTime(timezone=True), index=True)
 
-    provenance = relation(Provenance, backref='diskfile', order_by=Provenance.timestamp)
-    provenance_history = relation(ProvenanceHistory, backref='diskfile', order_by=ProvenanceHistory.timestamp_start)
+    provenance = relationship("Provenance", back_populates='diskfile', order_by="timestamp")
+    provenance_history = relationship("ProvenanceHistory", back_populates='diskfile', order_by="timestamp_start")
 
     # We use this to store an uncompressed Cache of a compressed file
     # This is not recorded in the database and is transient for the life
@@ -113,12 +123,12 @@ class DiskFile(Base):
 
     def __init__(self, given_file: File, given_filename: str, path: str, compressed=None):
         """
-        Create a :class:`~gemini_obs_db.diskfile.Diskfile` record.
+        Create a :class:`~gemini_obs_db.orm.diskfile.DiskFile` record.
 
         Parameters
         ----------
-        given_file : :class:`~gemini_obs_db.file.File`
-            A :class:`~gemini_obs_db.file.File` record to associate with
+        given_file : :class:`~gemini_obs_db.orm.file.File`
+            A :class:`~gemini_obs_db.orm.file.File` record to associate with
         given_filename : str
             The name of the file
         path : str
@@ -273,6 +283,6 @@ class DiskFile(Base):
         Returns
         -------
         str
-            A human radable representation of this :class:`~gemini_obs_db.diskfile.Diskfile`
+            A human radable representation of this :class:`~gemini_obs_db.orm.diskfile.DiskFile`
         """
         return "<DiskFile('%s', '%s', '%s', '%s')>" % (self.id, self.file_id, self.filename, self.path)

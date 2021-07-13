@@ -2,7 +2,7 @@ from sqlalchemy import Column, ForeignKey
 from sqlalchemy import Integer, Text, Enum
 from sqlalchemy.orm import relation
 
-from . import Base
+from gemini_obs_db.orm import Base
 from .header import Header
 
 
@@ -16,6 +16,13 @@ READ_MODE_ENUM = Enum(*READ_MODES, name='nifs_read_mode')
 class Nifs(Base):
     """
     This is the ORM object for the NIFS details
+
+    Parameters
+    ----------
+    header : :class:`~gemini_obs_db.orm.header.Header`
+        Header record linked to this one
+    ad : :class:`~astrodata.core.AstroData`
+        AstroData object to read NIFS data from
     """
     __tablename__ = 'nifs'
 
@@ -34,7 +41,7 @@ class Nifs(Base):
 
         Parameters
         ----------
-        header : :class:`~header.Header`
+        header : :class:`~gemini_obs_db.orm.header.Header`
             Header record linked to this one
         ad : :class:`~astrodata.core.AstroData`
             AstroData object to read NIFS data from

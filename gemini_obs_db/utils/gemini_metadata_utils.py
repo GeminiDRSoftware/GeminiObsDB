@@ -9,7 +9,7 @@ import datetime
 import dateutil.parser
 
 # from . import fits_storage_config
-from ..db_config import use_as_archive
+from gemini_obs_db.db.db_config import use_as_archive
 
 
 # ------------------------------------------------------------------------------

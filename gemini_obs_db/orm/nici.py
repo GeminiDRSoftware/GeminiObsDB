@@ -2,7 +2,7 @@ from sqlalchemy import Column, ForeignKey
 from sqlalchemy import Integer, Text, Enum
 from sqlalchemy.orm import relation
 
-from . import Base
+from gemini_obs_db.orm import Base
 from .header import Header
 
 
@@ -23,6 +23,13 @@ DISPERSER_ENUM = Enum(*DISPERSERS, name='nici_disperser')
 class Nici(Base):
     """
     This is the ORM object for the NICI details
+
+    Parameters
+    ----------
+    header : :class:`~gemini_obs_db.orm.header.Header`
+        Header record linked to this one
+    ad : :class:`~astrodata.core.AstroData`
+        AstroData object to read NICI data from
     """
     __tablename__ = 'nici'
 
@@ -40,7 +47,7 @@ class Nici(Base):
 
         Parameters
         ----------
-        header : :class:`~header.Header`
+        header : :class:`~gemini_obs_db.orm.header.Header`
             Header record linked to this one
         ad : :class:`~astrodata.core.AstroData`
             AstroData object to read NICI data from

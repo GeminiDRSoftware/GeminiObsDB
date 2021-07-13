@@ -2,7 +2,7 @@ from sqlalchemy import Column, ForeignKey
 from sqlalchemy import Integer, Text, Boolean
 from sqlalchemy.orm import relation
 
-from . import Base
+from gemini_obs_db.orm import Base
 from .header import Header
 
 
@@ -14,6 +14,12 @@ class Gpi(Base):
     """
     This is the ORM object for the GPI details.
 
+    Parameters
+    ----------
+    header : :class:`~gemini_obs_db.orm.header.Header`
+        Corresponding header rcord for the GPI data
+    ad : :class:`~astrodata.core.AstroData`
+        AstroData object to read GPI information from
     """
     __tablename__ = 'gpi'
 
@@ -34,7 +40,7 @@ class Gpi(Base):
 
         Parameters
         ----------
-        header : :class:`~header.Header`
+        header : :class:`~gemini_obs_db.orm.header.Header`
             Corresponding header rcord for the GPI data
         ad : :class:`~astrodata.core.AstroData`
             AstroData object to read GPI information from

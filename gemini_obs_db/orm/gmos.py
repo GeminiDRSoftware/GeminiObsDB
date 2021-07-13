@@ -4,7 +4,7 @@ from sqlalchemy.orm import relation
 
 from .header import Header
 
-from . import Base
+from gemini_obs_db.orm import Base
 
 
 __all__ = ["Gmos"]
@@ -24,6 +24,12 @@ class Gmos(Base):
     This is the ORM object for the GMOS details.
     This is used for both GMOS-N and GMOS-S
 
+    Parameters
+    ----------
+    header : :class:`~gemini_obs_db.orm.header.Header`
+        Corresponding header record
+    ad : :class:`astrodata.core.AstroData`
+        AstroData object to read GMOS information from
     """
     __tablename__ = 'gmos'
 
@@ -52,7 +58,7 @@ class Gmos(Base):
 
         Parameters
         ----------
-        header : :class:`~header.Header`
+        header : :class:`~gemini_obs_db.orm.header.Header`
             Corresponding header record
         ad : :class:`astrodata.core.AstroData`
             AstroData object to read GMOS information from
