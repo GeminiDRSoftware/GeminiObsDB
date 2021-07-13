@@ -1,11 +1,10 @@
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :caption: Contents:
 
    changelog.rst
-   gemini_obs_db.rst
-   gemini_obs_db.utils.rst
+   gemini_obs_db
 
 Indices and tables
 ==================

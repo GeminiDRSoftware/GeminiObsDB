@@ -1,7 +1,7 @@
 :orphan:
 
-fits_storage
-============
+gemini_obs_db
+=============
 
 .. toctree::
    :maxdepth: 4

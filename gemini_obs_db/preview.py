@@ -4,6 +4,11 @@ from sqlalchemy import Integer, Text
 from . import Base
 
 
+__all__ = ["Preview"]
+
+from .diskfile import DiskFile
+
+
 class Preview(Base):
     """
     This is the ORM object for the preview table. Use this to find preview (jpeg)
@@ -17,13 +22,13 @@ class Preview(Base):
                          index=True)
     filename = Column(Text)
 
-    def __init__(self, diskfile, preview_filename):
+    def __init__(self, diskfile: DiskFile, preview_filename: str):
         """
         Create a :class:`~Preview` record for the given :class:`~DiskFile` and associated preview filename
 
         Parameters
         ----------
-        diskfile : :class:`~DiskFile`
+        diskfile : :class:`~gemini_obs_db.diskfile.DiskFile`
             DiskFile record to store preview for
         preview_filename : str
             Filename of the preview file

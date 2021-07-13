@@ -33,8 +33,19 @@ Base = declarative_base()
 
 @contextmanager
 def session_scope(no_rollback=False):
-    "Provide a transactional scope around a series of operations"
+    """
+    Provide a transactional scope around a series of operations
 
+    Parameters
+    ----------
+    no_rollback: bool
+        True if we want to always commit, default is False
+
+    Returns
+    -------
+    sqlalchemy.orm.session.Session
+        Session with automatic commit/rollback handling on leaving the context
+    """
     session = sessionfactory()
     try:
         yield session
@@ -50,8 +61,16 @@ def session_scope(no_rollback=False):
 
 
 class StringLiteral(String):
+    """
+    Literal used for a custom SQLAlchemy dialect for debugging.
+
+    To debug SQLAlchemy queries, it is useful to have this custom
+    dialect that will convert the query, not into SQL, but into
+    a readable text string.  This class helps with that.
+    """
     def literal_processor(self, dialect):
         super_processor = super(StringLiteral, self).literal_processor(dialect)
+
         def process(value):
             if isinstance(value, (date, datetime)) or value is None:
                 return str(value)
@@ -60,6 +79,14 @@ class StringLiteral(String):
 
 
 class LiteralDialect(postgresql.dialect):
+    """
+    Literal used for a custom SQLAlchemy dialect for debugging.
+
+    To debug SQLAlchemy queries, it is useful to have this custom
+    dialect that will convert the query, not into SQL, but into
+    a readable text string.  This class is the top level dialect
+    description for that purpose.
+    """
     colspecs = {
         Date: StringLiteral,
         DateTime: StringLiteral,
@@ -68,7 +95,18 @@ class LiteralDialect(postgresql.dialect):
 
 
 def compiled_statement(stmt):
-    """Returns a compiled query using the PostgreSQL dialect. Useful for
-       example to print the real query, when debugging"""
-    return stmt.compile(dialect = LiteralDialect(), compile_kwargs={'literal_binds': True})
+    """
+    Returns a compiled query using the PostgreSQL dialect. Useful for
+    example to print the real query, when debugging
+
+    Parameters
+    ----------
+    stmt : :class:`~sqlalchemy.orm.statement.Statement
+
+    Returns
+    -------
+    str
+        String representation of the query
+    """
+    return stmt.compile(dialect=LiteralDialect(), compile_kwargs={'literal_binds': True})
 

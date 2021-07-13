@@ -7,6 +7,9 @@ from sqlalchemy import Integer, Text, DateTime, String
 from . import Base
 
 
+__all__ = ["Provenance", "ProvenanceHistory", "ingest_provenance"]
+
+
 # matches the value in DRAGONS
 # avoiding import within orm to avoid any circular referencing that could happen in future
 PROVENANCE_DATE_FORMAT="%Y-%m-%d %H:%M:%S.%f"
@@ -25,7 +28,7 @@ class Provenance(Base):
     primitive = Column(String(128))
     diskfile_id = Column(Integer, ForeignKey('diskfile.id'))
 
-    def __init__(self, timestamp, filename, md5, primitive):
+    def __init__(self, timestamp: datetime, filename: str, md5: str, primitive: str):
         """
         Create provenance record with the given information
 
@@ -59,7 +62,7 @@ class ProvenanceHistory(Base):
     args = Column(Text)
     diskfile_id = Column(Integer, ForeignKey('diskfile.id'))
 
-    def __init__(self, timestamp_start, timestamp_end, primitive, args):
+    def __init__(self, timestamp_start: datetime, timestamp_end: datetime, primitive: str, args: str):
         """
         Create a provenahce history record.
 
@@ -68,9 +71,9 @@ class ProvenanceHistory(Base):
 
         Parameters
         ----------
-        timestamp_start : DateTime
+        timestamp_start : datetime
             time the operation began
-        timestamp_end : DateTime
+        timestamp_end : datetime
             time the operation completed
         primitive : str
             Name of the DRAGONS primitive performed
@@ -92,7 +95,7 @@ def ingest_provenance(diskfile):
 
     Parameters
     ----------
-    diskfile : :class:`~diskfile.Diskfile`
+    diskfile : :class:`~gemini_obs_db.diskfile.Diskfile`
         diskfile to read provenance data out of
 
     Returns

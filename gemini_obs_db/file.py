@@ -5,6 +5,9 @@ from sqlalchemy.orm import relationship
 from . import Base
 
 
+__all__ = ["File"]
+
+
 class File(Base):
     """
     This is the ORM class for the file table. This is highest level most abstract
@@ -21,7 +24,7 @@ class File(Base):
 
     diskfiles = relationship('DiskFile', lazy='dynamic')
 
-    def __init__(self, filename):
+    def __init__(self, filename: str):
         """
         Create a :class:`~File` record from the filename
 
@@ -43,7 +46,7 @@ class File(Base):
         return "<File('%s', '%s')>" % (self.id, self.name)
 
     @staticmethod
-    def trim_name(filename):
+    def trim_name(filename: str):
         """
         Trim any trailing .bz2 off the filename
 

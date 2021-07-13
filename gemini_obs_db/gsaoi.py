@@ -6,6 +6,9 @@ from . import Base
 from .header import Header
 
 
+__all__ = ["Gsaoi"]
+
+
 class Gsaoi(Base):
     """
     This is the ORM object for the GSAOI details.
@@ -27,7 +30,7 @@ class Gsaoi(Base):
         ----------
         header : :class:`~header.Header`
             Header record connected to this information
-        ad : :class:`astrodata.AstroData`
+        ad : :class:`~astrodata.core.AstroData`
             AstroData to parse for GSAOI information
         """
         self.header = header
@@ -41,7 +44,7 @@ class Gsaoi(Base):
 
         Parameters
         ----------
-        ad : :class:`astrodata.AstroData`
+        ad : :class:`~astrodata.core.AstroData`
             AstroData object to populate GSAOI information from
         """
         self.filter_name = ad.filter_name()

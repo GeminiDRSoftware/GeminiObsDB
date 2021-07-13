@@ -11,7 +11,6 @@ import dateutil.parser
 import datetime
 import types
 
-# from gemini_instruments.gemini import AstroDataGemini
 from . import Base
 from .diskfile import DiskFile
 
@@ -33,6 +32,9 @@ from .utils.gemini_metadata_utils import site_monitor
 from astropy import wcs as pywcs
 from astropy.wcs import SingularMatrixError
 from astropy.io import fits
+
+
+__all__ = ["Header"]
 
 
 # This is a lingering circular dependency on DRAGONS
@@ -130,6 +132,27 @@ def _dec(ad):
 
 
 def _try_or_none(fn, log, message):
+    """
+    Helper wrapper to try accessing a field on an AstroData instance
+    but gracefully handle failures as None values.
+
+    This covers a variety of issues ultimately due to bad headers in the FITS
+    files.  We would rather get the file ingested with what data can be
+    parsed than fail completely.
+
+    Parameters
+    ----------
+    fn : str
+        field name
+    log : Logger
+        logging instance
+    message : str
+        Message to log as a warning on failure
+
+    Returns
+    -------
+    Value for the field, or None on error
+    """
     try:
         retval = fn()
         return retval

@@ -2,8 +2,6 @@
 This module provides various utility functions for create_tables.py
 in the Fits Storage System.
 """
-import sqlalchemy
-
 from . import pg_db
 from .file import File
 from .diskfile import DiskFile
@@ -21,10 +19,17 @@ from .michelle import Michelle
 from .calcache import CalCache
 
 
+__all__ = ["create_tables", "drop_tables"]
+
+
 def create_tables(session):
     """
-    Creates the database tables and grants the apache user
-    SELECT on the appropriate ones
+    Creates the database tables
+
+    Parameters
+    ----------
+    session : :class:`~sqlalchemy.orm.session.Session`
+        Database session to create tables in
     """
     # Create the tables
     File.metadata.create_all(bind=pg_db)
@@ -46,5 +51,10 @@ def create_tables(session):
 def drop_tables(session):
     """
     Drops all the database tables. Very unsubtle. Use with caution
+
+    Parameters
+    ----------
+    session : :class:`~sqlalchemy.orm.session.Session`
+        Database session to drop tables in
     """
     File.metadata.drop_all(bind=pg_db)

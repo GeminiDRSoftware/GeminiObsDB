@@ -5,6 +5,10 @@ from sqlalchemy.orm import relation
 from . import Base
 from .header import Header
 
+
+__all__ = ["Michelle"]
+
+
 READ_MODES = ['CHOP', 'NDCHOP', 'STARE', 'chop', 'stare', 'nod', 'chop-nod']
 READ_MODE_ENUM = Enum(*READ_MODES, name='michelle_read_mode')
 
@@ -46,7 +50,7 @@ class Michelle(Base):
     def __init__(self, header, ad):
         """
         Create a record for Michelle data linked to the given header and sourced
-        from an :class:`astrodata.AstroData` object
+        from an :class:`~astrodata.core.AstroData` object
 
         Parameters
         ----------
@@ -62,11 +66,11 @@ class Michelle(Base):
 
     def populate(self, ad):
         """
-        Populate the Michelle record data from an :class:`astrodata.AstroData` object
+        Populate the Michelle record data from an :class:`astrodata.core.AstroData` object
 
         Parameters
         ----------
-        ad : :class:`astrodata.AstroData`
+        ad : :class:`astrodata.core.AstroData`
             AstroData object to read Michelle data from
         """
 

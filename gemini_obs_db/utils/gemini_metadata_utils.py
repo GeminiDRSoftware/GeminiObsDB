@@ -782,22 +782,6 @@ dlcre = re.compile(r'^((?:%s)|(?:%s))-(\d*)-(\d*)(?:-(\w*))?$' % (calengre, scir
 
 
 class GeminiDataLabel:
-    """
-    The Gemini Data Label Class. This class parses various
-    useful things from a Gemini Data Label.
-
-    Simply instantiate the class with the datalabel, then
-    reference the following data members:
-
-    * datalabel: The datalabel provided. If the class could cannot
-                             make sense of the datalabel string passed in,
-                             this field will be empty.
-    * projectid: The Project ID
-    * observation_id: The Observation ID
-    * obsnum: The Observation Number within the project
-    * dlnum: The Dataset Number within the observation
-    * project: A GeminiProgram object for the project this is part of
-    """
     datalabel = ''
     projectid = ''
     observation_id = ''
@@ -806,18 +790,33 @@ class GeminiDataLabel:
     extension = ''
     project = ''
 
-    def __init__(self, dl):
-        self.datalabel = dl
-        self.projectid = ''
-        self.observation_id = ''
-        self.obsnum = ''
-        self.dlnum = ''
-        self.extension = ''
-        self.datalabel_noextension = ''
+    def __init__(self, dl: str):
+        """
+        Construct a GeminiDataLabel from the given datalabel string.
+
+        This will parse the passed datalabel and fill in the various fields
+        with values inferred from the datalabel.
+
+        dl: str
+            datalabel to use
+        """
+        self.datalabel = dl              #: datalabel as a string
+        self.projectid = ''              #: project id portion
+        self.project = None              #: :class:`~gemini_obs_db.utils.gemini_metadata_utils.GeminiProgram` for the given project id
+        self.observation_id = ''         #: observaiton id portion
+        self.obsnum = ''                 #: observation number
+        self.dlnum = ''                  #: datalabel number
+        self.extension = ''              #: extension number, if any
+        self.datalabel_noextension = ''  #: datalabel without the extension number suffix
+        self.valid = False               #: True if datalabel is in the correct format
         if self.datalabel:
             self.parse()
 
     def parse(self):
+        """
+        Infer the other fields for this GeminiDataLabel based on the
+        text datalabel.
+        """
         dlm = dlcre.match(self.datalabel)
         if dlm:
             self.projectid = dlm.group(1)

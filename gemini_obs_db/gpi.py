@@ -5,6 +5,10 @@ from sqlalchemy.orm import relation
 from . import Base
 from .header import Header
 
+
+__all__ = ["Gpi"]
+
+
 # ------------------------------------------------------------------------------
 class Gpi(Base):
     """
@@ -24,7 +28,7 @@ class Gpi(Base):
     wollaston = Column(Boolean, index=True)
     prism = Column(Boolean, index=True)
 
-    def __init__(self, header, ad):
+    def __init__(self, header: Header, ad):
         """
         Record for GPI information
 
@@ -32,7 +36,7 @@ class Gpi(Base):
         ----------
         header : :class:`~header.Header`
             Corresponding header rcord for the GPI data
-        ad : :class:`astrodata.AstroData`
+        ad : :class:`~astrodata.core.AstroData`
             AstroData object to read GPI information from
         """
         self.header = header
@@ -42,11 +46,11 @@ class Gpi(Base):
 
     def populate(self, ad):
         """
-        Populate this GPI record from the given astrodata object
+        Populate this GPI record from the given AstroData object
 
         Parameters
         ----------
-        ad : :class:`astrodata.AstroData`
+        ad : :class:`astrodata.core.AstroData`
             AstroData object to populate GPI data from
         """
         self.filter_name = ad.filter_name()

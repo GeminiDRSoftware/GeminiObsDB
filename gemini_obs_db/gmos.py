@@ -6,6 +6,10 @@ from .header import Header
 
 from . import Base
 
+
+__all__ = ["Gmos"]
+
+
 # ------------------------------------------------------------------------------
 # Enumerated column types
 READ_SPEED_SETTINGS = ['slow', 'fast']
@@ -42,7 +46,7 @@ class Gmos(Base):
     overscan_trimmed = Column(Boolean, index=True)
     grating_order = Column(Integer)
 
-    def __init__(self, header, ad):
+    def __init__(self, header: Header, ad):
         """
         Create a GMOS record for the given header and data
 
@@ -50,7 +54,7 @@ class Gmos(Base):
         ----------
         header : :class:`~header.Header`
             Corresponding header record
-        ad : :class:`astrodata.AstroData`
+        ad : :class:`astrodata.core.AstroData`
             AstroData object to read GMOS information from
         """
         self.header = header
@@ -64,7 +68,7 @@ class Gmos(Base):
 
         Parameters
         ----------
-        ad : :class:`astrodata.AstroData`
+        ad : :class:`astrodata.core.AstroData`
             AstroData record to read GMOS information from
         """
         self.disperser = ad.disperser()

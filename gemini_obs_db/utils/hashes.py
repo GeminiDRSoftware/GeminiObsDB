@@ -7,6 +7,9 @@ import hashlib
 import bz2
 
 
+__all__ = ["md5sum_size_fp", "md5sum", "md5sum_size_bz2"]
+
+
 def md5sum_size_fp(fobj):
     """
     Generates the md5sum and size of the data returned by the file-like object fobj, returns

@@ -4,7 +4,6 @@ from sqlalchemy.orm import relation
 
 import os
 import datetime
-import bz2
 import re
 
 from .provenance import Provenance, ProvenanceHistory
@@ -14,9 +13,11 @@ from . import Base
 from .file import File
 from .preview import Preview
 
-#from ..fits_storage_config import storage_root, z_staging_area
-# from .. import fits_storage_config as fsc
 from .db_config import storage_root, z_staging_area
+
+
+__all__ = ["DiskFile"]
+
 
 _standard_filename_timestamp_re = re.compile(r'[NS](\d{4})(\d{2})(\d{2})[A-Z].*')
 _igrins_filename_timestamp_re = re.compile(r'[A-Z]{4}_(\d{4})(\d{2})(\d{2})_.*')
@@ -24,7 +25,24 @@ _skycam_filename_timestamp_re = re.compile(r'img_(\d{4})(\d{2})(\d{2})_\d{2}h\d{
 _fallback_filename_timestamp_re = re.compile(r'.*(20\d{2})([0-1]\d)([0-3]\d).*')
 
 
-def _determine_timestamp_from_filename(filename):
+def _determine_timestamp_from_filename(filename: str):
+    """
+    Infer a timestamp using just the filename.
+
+    Our files follow a small set of possible naming conventions.  These
+    include a representation of the date fo the file.  This helper method
+    is for inferring the date of the file from it's filename.
+
+    Parameters
+    ----------
+    filename : str
+        Name of the file to infer a timestamp for
+
+    Returns
+    -------
+    datetime
+        The datetime implied by the filename, or None if the filename is not a recognized format
+    """
     for regex in [
         _standard_filename_timestamp_re,
         _igrins_filename_timestamp_re,
@@ -49,8 +67,7 @@ class DiskFile(Base):
     some metadata on the actual file as is and also on the decompressed data. 
     file_md5 and file_size are those of the actual file. data_md5 and data_size
     correspond to the uncompressed data if the file is compressed, and should be
-    the same as for file_ for uncompressed files.
-
+    the same as for file_md5/file_size for uncompressed files.
     """
     __tablename__ = 'diskfile'
 
@@ -94,14 +111,14 @@ class DiskFile(Base):
     # any DiskFile object returned by the ORM layer, or pulled in as a relation
     ad_object = None
 
-    def __init__(self, given_file, given_filename, path, compressed=None):
+    def __init__(self, given_file: File, given_filename: str, path: str, compressed=None):
         """
-        Create a :class:`~Diskfile` record.
+        Create a :class:`~gemini_obs_db.diskfile.Diskfile` record.
 
         Parameters
         ----------
-        given_file : :class:`~File`
-            A :class:`~File` record to associate with
+        given_file : :class:`~gemini_obs_db.file.File`
+            A :class:`~gemini_obs_db.file.File` record to associate with
         given_filename : str
             The name of the file
         path : str
@@ -162,7 +179,8 @@ class DiskFile(Base):
 
         Returns
         -------
-            str : full path to file
+        str
+            full path to file
         """
         return os.path.join(storage_root, self.path, self.filename)
 
@@ -172,7 +190,8 @@ class DiskFile(Base):
 
         Returns
         -------
-            int : size of file in bytes
+        int
+            size of file in bytes
         """
         return os.path.getsize(self.fullpath())
 
@@ -182,7 +201,8 @@ class DiskFile(Base):
 
         Returns
         -------
-            bool : True if the file exits, is a file, and is readable, else False
+        bool
+            True if the file exits, is a file, and is readable, else False
         """
         exists = os.access(self.fullpath(), os.F_OK | os.R_OK)
         isfile = os.path.isfile(self.fullpath())
@@ -194,7 +214,8 @@ class DiskFile(Base):
 
         Returns
         -------
-            str : md5 of the file as a string
+        str
+            md5 of the file as a string
         """
         return md5sum(self.fullpath())
 
@@ -202,8 +223,10 @@ class DiskFile(Base):
         """
         Get the MD5 checksum of the uncompressed file.
 
-        Returns:
-            str : md5 of the uncompressed file (this may be the same if it is not compressed)
+        Returns
+        -------
+        str
+            md5 of the uncompressed file (this may be the same if it is not compressed)
         """
         if self.compressed is False:
             return self.file_md5
@@ -220,7 +243,8 @@ class DiskFile(Base):
 
         Returns
         -------
-            int : The size of the file when uncompressed.
+        int
+            The size of the file when uncompressed.
         """
         if self.compressed is False:
             return self.get_file_size()
@@ -237,7 +261,8 @@ class DiskFile(Base):
 
         Returns
         -------
-            datetime : This checks on the filesystemf or the last modification date on the file
+        datetime
+            This checks on the filesystem for the last modification date on the file
         """
         return datetime.datetime.fromtimestamp(os.path.getmtime(self.fullpath()))
 
@@ -247,6 +272,7 @@ class DiskFile(Base):
 
         Returns
         -------
-            A human radable representation of this :class:`~Diskfile`
+        str
+            A human radable representation of this :class:`~gemini_obs_db.diskfile.Diskfile`
         """
         return "<DiskFile('%s', '%s', '%s', '%s')>" % (self.id, self.file_id, self.filename, self.path)

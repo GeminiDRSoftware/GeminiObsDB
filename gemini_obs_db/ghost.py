@@ -6,6 +6,10 @@ from .header import Header
 
 from . import Base
 
+
+__all__ = ["Ghost"]
+
+
 # Enumerated column types
 READ_SPEED_SETTINGS = ['slow', 'fast']
 READ_SPEED_SETTING_ENUM = Enum(*READ_SPEED_SETTINGS, name='ghost_read_speed_setting')
@@ -40,16 +44,16 @@ class Ghost(Base):
     overscan_subtracted = Column(Boolean, index=True)
     overscan_trimmed = Column(Boolean, index=True)
 
-    def __init__(self, header, ad):
+    def __init__(self, header: Header, ad):
         """
         Create a Ghost instrument record
 
         Parameters
         ----------
-        header : :class:`~header.Header`
+        header : :class:`~gemini_obs_db.header.Header`
             Corresponding header for the observation
-        ad : :class:`astrodata.AstroData`
-            Astrodata object to load Ghost information from
+        ad : :class:`astrodata.core.AstroData`
+            AstroData object to load Ghost information from
         """
         self.header = header
 
@@ -58,12 +62,12 @@ class Ghost(Base):
 
     def populate(self, ad):
         """
-        Populate the Ghost information from the given :class:`astrodata.AstroData`
+        Populate the Ghost information from the given :class:`astrodata.core.AstroData`
 
         Parameters
         ----------
-        ad : :class:`astrodata.Astrodata`
-            Astrodata object to read Ghost information from
+        ad : :class:`astrodata.core.AstroData`
+            AstroData object to read Ghost information from
         """
         self.disperser = ad.disperser()
         self.filter_name = ad.filter_name()

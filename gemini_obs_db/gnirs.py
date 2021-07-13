@@ -5,6 +5,10 @@ from sqlalchemy.orm import relation
 from . import Base
 from .header import Header
 
+
+__all__ = ["Gnirs"]
+
+
 # Enumerated Column types
 READ_MODES = ['Very Faint Objects', 'Faint Objects', 'Bright Objects',
               'Very Bright Objects', 'Invalid']
@@ -31,7 +35,7 @@ class Gnirs(Base):
     camera = Column(Text, index=True)
     focal_plane_mask = Column(Text)
 
-    def __init__(self, header, ad):
+    def __init__(self, header: Header, ad):
         """
         Create a GNIRS record for the given header and astrodata
 
@@ -39,7 +43,7 @@ class Gnirs(Base):
         ----------
         header : :class:`~header.Header`
             Header corresponding to this record
-        ad : :class:`astrodata.AstroData`
+        ad : :class:`~astrodata.core.AstroData`
             AstroData object to read GNIRS information from
         """
         self.header = header
@@ -53,7 +57,7 @@ class Gnirs(Base):
 
         Parameters
         ----------
-        ad : :class:`astrodata.AstroData`
+        ad : :class:`~astrodata.core.AstroData`
             AstroData object to populate from
         """
         try:

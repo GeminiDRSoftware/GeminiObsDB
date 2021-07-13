@@ -5,10 +5,14 @@ from sqlalchemy.orm import relation
 from . import Base
 from .header import Header
 
+
+__all__ = ["Nifs"]
+
+
 READ_MODES = ['Faint Object', 'Medium Object', 'Bright Object', 'Invalid']
 READ_MODE_ENUM = Enum(*READ_MODES, name='nifs_read_mode')
 
-# ------------------------------------------------------------------------------
+
 class Nifs(Base):
     """
     This is the ORM object for the NIFS details
@@ -26,13 +30,13 @@ class Nifs(Base):
     def __init__(self, header, ad):
         """
         Create a record for NIFS data linked to the given header and sourced
-        from an :class:`astrodata.AstroData` object
+        from an :class:`~astrodata.core.AstroData` object
 
         Parameters
         ----------
         header : :class:`~header.Header`
             Header record linked to this one
-        ad : :class:`astrodata.AstroData`
+        ad : :class:`~astrodata.core.AstroData`
             AstroData object to read NIFS data from
         """
         self.header = header
@@ -42,11 +46,11 @@ class Nifs(Base):
 
     def populate(self, ad):
         """
-        Populate the NIFS record data from an :class:`astrodata.AstroData` object
+        Populate the NIFS record data from an :class:`~astrodata.core.AstroData` object
 
         Parameters
         ----------
-        ad : :class:`astrodata.AstroData`
+        ad : :class:`~astrodata.core.AstroData`
             AstroData object to read NIFS data from
         """
         self.disperser = ad.disperser()

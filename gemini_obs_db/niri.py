@@ -6,6 +6,10 @@ from .header import Header
 
 from . import Base
 
+
+__all__ = ["Niri"]
+
+
 # Enumerated Column types
 READ_MODES = ['High Background', 'Medium Background', 'Low Background', 'Invalid']
 READ_MODE_ENUM = Enum(*READ_MODES, name='niri_read_mode')
@@ -56,13 +60,13 @@ class Niri(Base):
     def __init__(self, header, ad):
         """
         Create a record for NIRI data linked to the given header and sourced
-        from an :class:`astrodata.AstroData` object
+        from an :class:`~astrodata.core.AstroData` object
 
         Parameters
         ----------
         header : :class:`~header.Header`
             Header record linked to this one
-        ad : :class:`astrodata.AstroData`
+        ad : :class:`~astrodata.core.AstroData`
             AstroData object to read NIRI data from
         """
         self.header = header
@@ -72,11 +76,11 @@ class Niri(Base):
 
     def populate(self, ad):
         """
-        Populate the NIRI record data from an :class:`astrodata.AstroData` object
+        Populate the NIRI record data from an :class:`~astrodata.core.AstroData` object
 
         Parameters
         ----------
-        ad : :class:`astrodata.AstroData`
+        ad : :class:`~astrodata.core.AstroData`
             AstroData object to read NIRI data from
         """
         disperser = ad.disperser()

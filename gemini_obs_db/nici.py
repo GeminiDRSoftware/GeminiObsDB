@@ -5,6 +5,10 @@ from sqlalchemy.orm import relation
 from . import Base
 from .header import Header
 
+
+__all__ = ["Nici"]
+
+
 FOCAL_PLANE_MASKS = ['Clear_G5710', 'F0.22_G5715', 'F0.32_G5714', 'F0.46_G5713', 
                      'F0.65_G5712', 'F0.90_G5711', 'Grid_G5716']
 
@@ -32,13 +36,13 @@ class Nici(Base):
     def __init__(self, header, ad):
         """
         Create a record for NICI data linked to the given header and sourced
-        from an :class:`astrodata.AstroData` object
+        from an :class:`~astrodata.core.AstroData` object
 
         Parameters
         ----------
         header : :class:`~header.Header`
             Header record linked to this one
-        ad : :class:`astrodata.AstroData`
+        ad : :class:`~astrodata.core.AstroData`
             AstroData object to read NICI data from
         """
         self.header = header
@@ -48,11 +52,11 @@ class Nici(Base):
 
     def populate(self, ad):
         """
-        Populate the NICI record data from an :class:`astrodata.AstroData` object
+        Populate the NICI record data from an :class:`~astrodata.core.AstroData` object
 
         Parameters
         ----------
-        ad : :class:`astrodata.AstroData`
+        ad : :class:`~astrodata.core.AstroData`
             AstroData object to read NICI data from
         """
         try:

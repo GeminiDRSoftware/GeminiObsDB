@@ -6,7 +6,10 @@ from .header import Header
 
 from . import Base
 
-# ------------------------------------------------------------------------------
+
+__all__ = ["F2"]
+
+
 class F2(Base):
     """
     This is the ORM object for the F2 details
@@ -23,7 +26,7 @@ class F2(Base):
     read_mode = Column(Text, index=True)
     focal_plane_mask = Column(Text)
 
-    def __init__(self, header, ad):
+    def __init__(self, header: Header, ad):
         """
         Create an F2 record with the given :class:`~header.Header` and data from :class:`astrodata.Astrodata`
 
@@ -41,11 +44,11 @@ class F2(Base):
 
     def populate(self, ad):
         """
-        Populate the F2 information from the given :class:`~astrodata.Astrodata` object
+        Populate the F2 information from the given :class:`~astrodata.core.AstroData` object
 
         Parameters
         ----------
-        ad : :class:`astrodata.Astrodata`
+        ad : :class:`astrodata.core.AstroData`
             Astrodata object to read F2 information from
         """
         self.disperser = ad.disperser()

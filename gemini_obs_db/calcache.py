@@ -1,13 +1,17 @@
 from sqlalchemy import Column, ForeignKey
-from sqlalchemy import Integer, BigInteger, SmallInteger, Enum, DateTime
+from sqlalchemy import Integer, BigInteger, SmallInteger, Enum
 
 from . import Base
 
 from .utils.gemini_metadata_utils import cal_types
 
+
+__all__ = ["CalCache"]
+
+
 CALTYPE_ENUM = Enum(*cal_types, name='caltype')
 
-# ------------------------------------------------------------------------------
+
 class CalCache(Base):
     """
     This is the ORM class for the calibration Association Cache. It's too slow 
@@ -29,7 +33,7 @@ class CalCache(Base):
     rank = Column(SmallInteger, nullable=False, index=True)
     caltype = Column(CALTYPE_ENUM, index=True)
     
-    def __init__(self, obs_hid, cal_hid, caltype, rank):
+    def __init__(self, obs_hid: int, cal_hid: int, caltype: CALTYPE_ENUM, rank: int):
         """
         Create a calcache record linking data to a relevant calibration file.
 
