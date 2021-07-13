@@ -9,7 +9,7 @@ import datetime
 import dateutil.parser
 
 # from . import fits_storage_config
-from gemini_obs_db.db.db_config import use_as_archive
+from gemini_obs_db.db.db_config import use_utc
 
 
 # ------------------------------------------------------------------------------
@@ -949,7 +949,7 @@ def get_date_offset():
     sites where Gemini is based.
 
     """
-    if use_as_archive:
+    if use_utc:
         return ZERO_OFFSET
 
     # Calculate the proper offset to add to the date

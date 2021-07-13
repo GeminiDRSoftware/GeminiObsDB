@@ -1,28 +1,29 @@
-from os.path import join as opjoin
+from os.path import join
 
 
 __all__ = [
     "using_apache",
-    "use_as_archive",
+    "use_utc",
     "z_staging_area",
     "storage_root",
-    "fits_dbname",
-    "db_path",
-    "fits_database",
-    "fits_database_pool_size",
-    "fits_database_max_overflow",
+    "sqlite_db_path",
+    "database_url",
+    "postgres_database_pool_size",
+    "postgres_database_max_overflow",
 ]
 
 
 using_apache = False
-use_as_archive = False
+use_utc = False
 z_staging_area = ''
 storage_root = '/tmp'
-fits_dbname = 'fitsdata.fdb'
-db_path = opjoin(storage_root, fits_dbname)
-fits_database = 'sqlite:///' + db_path
-fits_database_pool_size = 30
-fits_database_max_overflow = 10
+sqlite_db_path = join(storage_root, 'gemini_obs_db.db')
+database_url = 'sqlite:///' + sqlite_db_path
+
+# These two are only used if we are using a Postgres database
+# However, we define then anyway so they are available for import
+postgres_database_pool_size = 30
+postgres_database_max_overflow = 10
 
 
 # Slightly naughty cyclical dependency on FitsStorage remains here.  This trick will pull in
@@ -31,12 +32,12 @@ fits_database_max_overflow = 10
 try:
     from fits_storage import fits_storage_config
     using_apache = True
-    use_as_archive = fits_storage_config.use_as_archive
+    use_utc = fits_storage_config.use_as_archive
     storage_root = fits_storage_config.storage_root
     z_staging_area = fits_storage_config.z_staging_area
-    fits_database = fits_storage_config.fits_database
-    fits_database_pool_size = fits_storage_config.fits_database_pool_size
-    fits_database_max_overflow = fits_storage_config.fits_database_max_overflow
+    database_url = fits_storage_config.fits_database
+    postgres_database_pool_size = fits_storage_config.fits_database_pool_size
+    postgres_database_max_overflow = fits_storage_config.fits_database_max_overflow
 except:
     # ok, not running in FITS Server context
     pass

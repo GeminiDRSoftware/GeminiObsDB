@@ -6,15 +6,15 @@ from sqlalchemy.dialects import postgresql
 from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy.sql.sqltypes import NullType
 
-from gemini_obs_db.db.db_config import fits_database, fits_database_pool_size, fits_database_max_overflow
+from gemini_obs_db.db.db_config import database_url, postgres_database_pool_size, postgres_database_max_overflow
 
 
-if fits_database.startswith('postgresql://'):
-    args = {'pool_size': fits_database_pool_size, 'max_overflow': fits_database_max_overflow,
+if database_url.startswith('postgresql://'):
+    args = {'pool_size': postgres_database_pool_size, 'max_overflow': postgres_database_max_overflow,
             'echo': False}
 else:
     args = {'echo': False}
-pg_db = create_engine(fits_database, **args)
+pg_db = create_engine(database_url, **args)
 sessionfactory = sessionmaker(pg_db)
 
 Base = declarative_base()
