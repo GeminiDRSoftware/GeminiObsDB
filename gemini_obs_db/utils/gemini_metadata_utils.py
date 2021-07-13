@@ -9,7 +9,7 @@ import datetime
 import dateutil.parser
 
 # from . import fits_storage_config
-from gemini_obs_db.db.db_config import use_utc
+from gemini_obs_db.db_config import use_utc
 
 
 # ------------------------------------------------------------------------------

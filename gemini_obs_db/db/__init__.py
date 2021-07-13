@@ -6,7 +6,7 @@ from sqlalchemy.dialects import postgresql
 from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy.sql.sqltypes import NullType
 
-from gemini_obs_db.db.db_config import database_url, postgres_database_pool_size, postgres_database_max_overflow
+from gemini_obs_db.db_config import database_url, postgres_database_pool_size, postgres_database_max_overflow
 
 
 if database_url.startswith('postgresql://'):
