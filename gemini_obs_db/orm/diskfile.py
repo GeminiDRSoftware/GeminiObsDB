@@ -16,6 +16,8 @@ from gemini_obs_db.db_config import storage_root, z_staging_area
 
 __all__ = ["DiskFile"]
 
+from .preview import Preview
+from .provenance import Provenance, ProvenanceHistory
 
 _standard_filename_timestamp_re = re.compile(r'[NS](\d{4})(\d{2})(\d{2})[A-Z].*')
 _igrins_filename_timestamp_re = re.compile(r'[A-Z]{4}_(\d{4})(\d{2})(\d{2})_.*')
@@ -84,7 +86,7 @@ class DiskFile(Base):
     id = Column(Integer, primary_key=True)
     file_id = Column(Integer, ForeignKey('file.id'), nullable=False, index=True)
     file = relation(File, order_by=id)
-    previews = relationship("Preview", back_populates="diskfile", order_by="Preview.filename")
+    previews = relationship(Preview, back_populates="diskfile", order_by=Preview.filename)
 
     filename = Column(Text, index=True)
     path = Column(Text)
@@ -106,9 +108,9 @@ class DiskFile(Base):
 
     datafile_timestamp = Column(DateTime(timezone=True), index=True)
 
-    provenance = relationship("Provenance", back_populates='diskfile', order_by="Provenance.timestamp")
-    provenance_history = relationship("ProvenanceHistory", back_populates='diskfile',
-                                      order_by="ProvenanceHistory.timestamp_start")
+    provenance = relationship(Provenance, back_populates='diskfile', order_by=Provenance.timestamp)
+    provenance_history = relationship(ProvenanceHistory, back_populates='diskfile',
+                                      order_by=ProvenanceHistory.timestamp_start)
 
     # We use this to store an uncompressed Cache of a compressed file
     # This is not recorded in the database and is transient for the life

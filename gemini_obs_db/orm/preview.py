@@ -7,8 +7,6 @@ from gemini_obs_db.orm import Base
 
 __all__ = ["Preview"]
 
-from gemini_obs_db.orm.diskfile import DiskFile
-
 
 class Preview(Base):
     """
@@ -30,7 +28,7 @@ class Preview(Base):
     diskfile = relationship("DiskFile", back_populates="previews")
     filename = Column(Text)
 
-    def __init__(self, diskfile: DiskFile, preview_filename: str):
+    def __init__(self, diskfile, preview_filename: str):
         """
         Create a :class:`~Preview` record for the given :class:`~DiskFile` and associated preview filename
 

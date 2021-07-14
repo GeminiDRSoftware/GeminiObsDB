@@ -9,7 +9,7 @@ from gemini_obs_db.orm import Base
 
 __all__ = ["Provenance", "ProvenanceHistory", "ingest_provenance"]
 
-from .diskfile import DiskFile
+# from .diskfile import DiskFile
 
 PROVENANCE_DATE_FORMAT = "%Y-%m-%d %H:%M:%S.%f"
 
@@ -98,7 +98,7 @@ class ProvenanceHistory(Base):
         self.args = args
 
 
-def ingest_provenance(diskfile: DiskFile):
+def ingest_provenance(diskfile):
     """
     Ingest the provenance data from the diskfile into the database.
 
