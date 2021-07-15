@@ -4,7 +4,7 @@
 User-Facing Changes
 -------------------
 
-gmos_calmgr
-^^^^^^^^^^^
+gemini_obs_db
+^^^^^^^^^^^^^
 
 - Initial version now decoupled from the FitsStorage codebase
