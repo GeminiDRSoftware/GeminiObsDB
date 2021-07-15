@@ -1,4 +1,4 @@
-gemini\_db\_db.db
+gemini\_obs\_db.db
 =================
 
 .. automodule:: gemini_obs_db.db
