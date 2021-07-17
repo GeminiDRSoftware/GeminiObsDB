@@ -4,6 +4,7 @@
    :caption: Contents:
 
    changelog.rst
+   about
    gemini_obs_db
 
 Indices and tables

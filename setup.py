@@ -4,7 +4,7 @@ from setuptools import setup
 from gemini_obs_db import __version__
 
 setup(
-    name='FitsStorageDB',
+    name='GeminiObsDB',
     version=__version__,
     # The following is need only if publishing this under PyPI or similar
     #description = '...',
