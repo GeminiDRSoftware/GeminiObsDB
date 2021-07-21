@@ -19,11 +19,11 @@ __all__ = [
 using_apache = False
 use_utc = False
 z_staging_area = ''
-storage_root = '/tmp'
+storage_root = ''
 sqlite_db_path = join(storage_root, 'gemini_obs_db.db')
 database_url = 'sqlite:///' + sqlite_db_path
 
 # These two are only used if we are using a Postgres database
-# However, we define then anyway so they are available for import
+# However, we define them anyway so they are available for import
 postgres_database_pool_size = 30
 postgres_database_max_overflow = 10
