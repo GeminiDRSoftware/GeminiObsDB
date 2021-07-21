@@ -5,6 +5,7 @@
 
    changelog.rst
    about
+   usage
    gemini_obs_db
 
 Indices and tables

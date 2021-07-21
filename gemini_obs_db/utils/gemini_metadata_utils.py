@@ -56,6 +56,7 @@ __all__ = [
     "gemini_semester",
     "previous_semester",
     "site_monitor",
+    "UT_DATETIME_SECS_EPOCH",
 ]
 
 # ------------------------------------------------------------------------------
@@ -63,6 +64,7 @@ DATE_LIMIT_LOW = dateutil.parser.parse('19900101')
 DATE_LIMIT_HIGH = dateutil.parser.parse('20500101')
 ZERO_OFFSET = datetime.timedelta()
 ONEDAY_OFFSET = datetime.timedelta(days=1)
+UT_DATETIME_SECS_EPOCH = datetime.datetime(2000, 1, 1, 0, 0, 0)
 # ------------------------------------------------------------------------------
 # Compile some regular expressions here. This is fairly complex, so I've
 # split it up in substrings to make it easier to follow.
