@@ -80,7 +80,7 @@ class FileParser(ABC):
     def camera(self) -> str:
         raise NotImplementedError()
 
-    def cas_rotator_pa(self):
+    def cass_rotator_pa(self):
         raise NotImplementedError()
 
     def central_wavelength(self) -> Union[float, None]:
@@ -282,7 +282,7 @@ class AstroDataFileParser(FileParser):
     def camera(self) -> str:
         return self._try_or_none(lambda: self.ad.camera(pretty=True), "Unable to parse camera from header")
 
-    def cas_rotator_pa(self):
+    def cass_rotator_pa(self):
         return self._try_or_none(self.ad.cass_rotator_pa, "Unable to parse cass rotator pa")
 
     def central_wavelength(self):

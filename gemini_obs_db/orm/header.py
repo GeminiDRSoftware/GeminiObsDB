@@ -141,14 +141,14 @@ class Header(Base):
     def __repr__(self):
         return "<Header('%s', '%s')>" % (self.id, self.diskfile_id)
 
-    def populate_fits(self, diskfile, log=None):
+    def populate_fits(self, diskfile: DiskFile, log=None):
         """
         Populates header table values from the FITS headers of the file.
         Uses the AstroData object to access the file.
 
         Parameters
         ----------
-        diskfile : :class:`~diskfile.DiskFile`
+        diskfile : :class:`~gemini_obs_db.orm.diskfile.DiskFile`
             DiskFile record to read to populate :class:`~Header` record
         log : :class:`logging.Logger`
             Logger to log messages to
@@ -215,7 +215,7 @@ class Header(Base):
 
         self.requested_iq = parser.requested_iq()
         self.requested_cc = parser.requested_cc()
-        self.requested_wv = parser.requesetd_wv()
+        self.requested_wv = parser.requested_wv()
         self.requested_bg = parser.requested_bg()
 
         self.filter_name = parser.filter_name()
@@ -227,11 +227,6 @@ class Header(Base):
         self.focal_plane_mask = parser.focal_plane_mask()
         self.pupil_mask = parser.pupil_mask()
 
-        dvx = parser.detector_x_bin()
-        dvy = parser.detector_y_bin()
-
-        if (dvx is not None) and (dvy is not None):
-            self.detector_binning = "%dx%d" % (dvx, dvy)
         self.detector_binning = parser.detector_binning()
         self.detector_gain_setting = parser.gain_setting()
         self.detector_readspeed_setting = parser.read_speed_setting()
@@ -259,7 +254,7 @@ class Header(Base):
 
         return
 
-    def footprints(self, ad):
+    def footprints(self, ad: astrodata.AstroData):
         """
         Set footprints based on information in an :class:`astrodata.AstroData` instance.
 
