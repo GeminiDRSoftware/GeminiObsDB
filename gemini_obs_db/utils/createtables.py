@@ -4,7 +4,8 @@ in the Fits Storage System.
 """
 from sqlalchemy.orm import Session
 
-from gemini_obs_db.db import pg_db
+import gemini_obs_db.db as db
+# from gemini_obs_db.db import pg_db
 from gemini_obs_db.orm.file import File
 from gemini_obs_db.orm.diskfile import DiskFile
 from gemini_obs_db.orm.header import Header
@@ -32,20 +33,20 @@ def create_tables(session: Session):
         Session to create tables in
     """
     # Create the tables
-    File.metadata.create_all(bind=pg_db)
-    DiskFile.metadata.create_all(bind=pg_db)
-    Header.metadata.create_all(bind=pg_db)
-    Gmos.metadata.create_all(bind=pg_db)
-    Niri.metadata.create_all(bind=pg_db)
-    Nifs.metadata.create_all(bind=pg_db)
-    Gnirs.metadata.create_all(bind=pg_db)
-    F2.metadata.create_all(bind=pg_db)
-    Ghost.metadata.create_all(bind=pg_db)
-    Gpi.metadata.create_all(bind=pg_db)
-    Gsaoi.metadata.create_all(bind=pg_db)
-    Michelle.metadata.create_all(bind=pg_db)
-    Nici.metadata.create_all(bind=pg_db)
-    CalCache.metadata.create_all(bind=pg_db)
+    File.metadata.create_all(bind=db.pg_db)
+    DiskFile.metadata.create_all(bind=db.pg_db)
+    Header.metadata.create_all(bind=db.pg_db)
+    Gmos.metadata.create_all(bind=db.pg_db)
+    Niri.metadata.create_all(bind=db.pg_db)
+    Nifs.metadata.create_all(bind=db.pg_db)
+    Gnirs.metadata.create_all(bind=db.pg_db)
+    F2.metadata.create_all(bind=db.pg_db)
+    Ghost.metadata.create_all(bind=db.pg_db)
+    Gpi.metadata.create_all(bind=db.pg_db)
+    Gsaoi.metadata.create_all(bind=db.pg_db)
+    Michelle.metadata.create_all(bind=db.pg_db)
+    Nici.metadata.create_all(bind=db.pg_db)
+    CalCache.metadata.create_all(bind=db.pg_db)
 
 
 def drop_tables(session: Session):
@@ -57,4 +58,4 @@ def drop_tables(session: Session):
     session : :class:`Session`
         Session to create tables in
     """
-    File.metadata.drop_all(bind=pg_db)
+    File.metadata.drop_all(bind=db.pg_db)

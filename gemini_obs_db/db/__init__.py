@@ -7,16 +7,37 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql.sqltypes import NullType
 
-from gemini_obs_db.db_config import database_url, postgres_database_pool_size, postgres_database_max_overflow
+# from gemini_obs_db.db_config import database_url, postgres_database_pool_size, postgres_database_max_overflow
+from gemini_obs_db import db_config as dbc
 
-
-if database_url.startswith('postgresql://'):
-    args = {'pool_size': postgres_database_pool_size, 'max_overflow': postgres_database_max_overflow,
+if dbc.database_url.startswith('postgresql://'):
+    args = {'pool_size': dbc.postgres_database_pool_size, 'max_overflow': dbc.postgres_database_max_overflow,
             'echo': False}
 else:
     args = {'echo': False}
-pg_db = create_engine(database_url, **args)
+pg_db = create_engine(dbc.database_url, **args)
 sessionfactory = sessionmaker(pg_db)
+
+
+_saved_database_url = None
+_saved_sessionfactory = None
+
+
+def sessionfactory():
+    global pg_db
+    global _saved_database_url
+    global _saved_sessionfactory
+    if _saved_database_url != dbc.database_url:
+        _saved_database_url = dbc.database_url
+        if dbc.database_url.startswith('postgresql://'):
+            args = {'pool_size': dbc.postgres_database_pool_size, 'max_overflow': dbc.postgres_database_max_overflow,
+                    'echo': False}
+        else:
+            args = {'echo': False}
+        pg_db = create_engine(dbc.database_url, **args)
+        _saved_sessionfactory = sessionmaker(pg_db)
+    return _saved_sessionfactory()
+
 
 Base = declarative_base()
 
