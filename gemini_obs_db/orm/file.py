@@ -26,7 +26,7 @@ class File(Base):
     id = Column(Integer, primary_key=True)
     name = Column(Text, nullable=False, unique=True, index=True)
 
-    diskfiles = relationship('DiskFile', lazy='dynamic')
+    diskfiles = relationship('DiskFile', lazy='dynamic', back_populates='file')
 
     def __init__(self, filename: str):
         """
