@@ -85,7 +85,7 @@ class DiskFile(Base):
 
     id = Column(Integer, primary_key=True)
     file_id = Column(Integer, ForeignKey('file.id'), nullable=False, index=True)
-    file = relation(File, order_by=id, overlaps="diskfiles")
+    file = relation(File, order_by=id)  #, overlaps="diskfiles") -- TODO this was suggested by SQLAlchemy?  different version?
     previews = relationship(Preview, back_populates="diskfile", order_by=Preview.filename)
 
     filename = Column(Text, index=True)
