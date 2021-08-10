@@ -584,7 +584,8 @@ class AstroDataFileParser(FileParser):
 
 
 class AlopekeZorroFileParser(AstroDataFileParser):
-    def __init__(self, default_telescope):
+    def __init__(self, ad, default_telescope):
+        super().__init__(ad)
         self._default_telescope = default_telescope
 
     def _extract_wcs(self):
@@ -774,9 +775,9 @@ def build_parser(ad, log) -> FileParser:
     if 'GMOS' in ad.tags:
         return GMOSFileParser(ad, log)
     elif ad.instrument().upper() == 'ALOPEKE':
-        return AlopekeZorroFileParser(default_telescope='Gemini-North')
+        return AlopekeZorroFileParser(ad, default_telescope='Gemini-North')
     elif ad.instrument().upper() == 'ZORRO':
-        return AlopekeZorroFileParser(default_telescope='Gemini-South')
+        return AlopekeZorroFileParser(ad, default_telescope='Gemini-South')
     elif ad.instrument().upper() == 'NICI':
         return NICIFileParser(ad, log)
     else:
