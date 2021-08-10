@@ -295,7 +295,8 @@ class AstroDataFileParser(FileParser):
         return self._try_or_none(self.ad.coadds, 'Unable to read co-adds from header')
 
     def data_label(self) -> str:
-        data_label = self._try_or_none(self.ad.data_label, 'Unable to parse datalabel from header')
+        data_label = self._try_or_none(self.ad.data_label, 'Unable to parse datalabel from header',
+                                       convert_fn=lambda x: str(x).upper())
         if data_label is None:
             data_label = ''
         return data_label
