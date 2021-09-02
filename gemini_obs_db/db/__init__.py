@@ -24,6 +24,16 @@ _saved_sessionfactory = None
 
 
 def sessionfactory():
+    """
+    Retrieves a singleton session factory.
+
+    This call grants access to a singleton SQLAlchemy session factory.  If the factory
+    does not exist yet, it is created from :field:`~gemini_obs_db.db_config.database_url`.
+
+    Returns
+    -------
+    :class:`~sqlalchemy.orm.sessionmaker` SQLAlchemy session factory
+    """
     global pg_db
     global _saved_database_url
     global _saved_sessionfactory

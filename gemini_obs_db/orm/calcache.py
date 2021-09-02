@@ -30,10 +30,10 @@ class CalCache(Base):
         ID of the :class:`~gemini_obs_db.orm.header.Header` record for the data being linked
     cal_hid : int
         ID of the :class:`~gemini_obs_db.orm.header.Header` record for the calibration
-    caltype : `CALTYPE_ENUM`
+    caltype : `~gemini_obs_db.orm.calcache.CALTYPE_ENUM`
         type of calibration being linked
     rank : int
-        rank of this calibrtion (relative to other options, lower is better)
+        rank of this calibration (relative to other options, lower is better)
     """
     __tablename__ = 'calcache'
 
@@ -62,7 +62,7 @@ class CalCache(Base):
         caltype : `CALTYPE_ENUM`
             type of calibration being linked
         rank : int
-            rank of this calibrtion (relative to other options, lower is better)
+            rank of this calibration (relative to other options, lower is better)
         """
         self.obs_hid = obs_hid
         self.cal_hid = cal_hid

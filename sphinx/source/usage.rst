@@ -10,7 +10,7 @@ to use a PostgreSQL Database Server.  If it is run without
 any special configuration, it will default to using SQLite.
 
 To modify the database settings, update the configuration fields
-in :module:`gemini_obs_db.db_config` to suit your needs.  In
+in `gemini_obs_db.db_config` to suit your needs.  In
 particular, you may want to modify these settings
 
 database_url
