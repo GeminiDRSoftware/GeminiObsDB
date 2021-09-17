@@ -11,7 +11,8 @@ from gemini_obs_db.utils.hashes import md5sum, md5sum_size_bz2
 from gemini_obs_db.orm import Base
 from .file import File
 
-from gemini_obs_db.db_config import storage_root, z_staging_area
+# from gemini_obs_db.db_config import storage_root, z_staging_area
+from gemini_obs_db import db_config
 
 
 __all__ = ["DiskFile"]
@@ -163,7 +164,7 @@ class DiskFile(Base):
                     nonzfilename = given_filename[:-4]
                 else:
                     nonzfilename = given_filename + "_bz2unzipped"
-                self.uncompressed_cache_file = os.path.join(z_staging_area, nonzfilename)
+                self.uncompressed_cache_file = os.path.join(db_config.z_staging_area, nonzfilename)
                 if os.path.exists(self.uncompressed_cache_file):
                     os.unlink(self.uncompressed_cache_file)
 
@@ -195,7 +196,7 @@ class DiskFile(Base):
         str
             full path to file
         """
-        return os.path.join(storage_root, self.path, self.filename)
+        return os.path.join(db_config.storage_root, self.path, self.filename)
 
     def get_file_size(self):
         """

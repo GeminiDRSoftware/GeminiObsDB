@@ -860,6 +860,10 @@ class GeminiDataLabel:
         dl: str
             datalabel to use
         """
+        # Clean up datalabel if it has space padding
+        if dl is not None and isinstance(dl, str):
+            dl = dl.strip()
+
         self.datalabel = dl              #: datalabel as a string
         self.projectid = ''              #: project id portion
         self.project = None              #: :class:`~gemini_obs_db.utils.gemini_metadata_utils.GeminiProgram` for the given project id
@@ -916,6 +920,10 @@ class GeminiObservation:
     obsnum = ''
 
     def __init__(self, observation_id):
+        # Clean up value if it has space padding
+        if observation_id is not None and isinstance(observation_id, str):
+            observation_id = observation_id.strip()
+
         if observation_id:
             match = re.match(obsre, observation_id)
             if match:
@@ -975,6 +983,10 @@ class GeminiProgram:
     is_ds = False
 
     def __init__(self, program_id: str):
+        # clean up any spaces
+        if program_id is not None and isinstance(program_id, str):
+            program_id = program_id.strip()
+
         self.program_id = program_id
 
         # Check for the CAL / ENG form

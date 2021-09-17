@@ -316,6 +316,7 @@ class AstroDataFileParser(FileParser):
         dvy = self._try_or_none(self.ad.detector_y_bin, "Unable to parse detector y bin form header")
         if (dvx is not None) and (dvy is not None):
             return "%dx%d" % (dvx, dvy)
+        return None
 
     def detector_roi_setting(self):
         return self._try_or_none(self.ad.detector_roi_setting, "Unable to parse ROI setting from header")
@@ -349,7 +350,8 @@ class AstroDataFileParser(FileParser):
         try:
             filter_string = self.ad.filter_name(pretty=True)
             if filter_string:
-                return filter_string.replace('%', '').replace(' ', '_')
+                filter_string = filter_string.replace('%', '').replace(' ', '_')
+            return filter_string
         except AttributeError:
             return None
 
@@ -710,7 +712,10 @@ class IGRINSFileParser(AstroDataFileParser):
 
     def observation_id(self) -> str:
         progid = self.program_id()
-        obsid = self.ad.phu['OBSID']
+        try:
+            obsid = self.ad.phu['OBSID']
+        except (TypeError, AttributeError, KeyError, ValueError, IndexError) as data_err:
+            obsid = None
         if obsid is None and progid is None:
             return None
         if (obsid is None and progid is not None) or obsid == progid:
