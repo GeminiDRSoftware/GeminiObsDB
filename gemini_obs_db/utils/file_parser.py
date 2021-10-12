@@ -440,7 +440,7 @@ class AstroDataFileParser(FileParser):
 
     def program_id(self) -> str:
         return self._try_or_none(self.ad.program_id, 'Unable to read Program ID from header',
-                                 convert_fn=lambda x: x.upper())
+                                 convert_fn=lambda x: str(x).upper())
 
     def proprietary_coordinates(self) -> bool:
         # Proprietary coordinates
