@@ -11,6 +11,6 @@ setup(
     #author = 'Paul Hirst',
     #author_email = 'phirst@gemini.edu',
     license = 'License :: OSI Approved :: BSD License',
-    packages = ['gemini_obs_db', 'gemini_obs_db.utils'],
+    packages = ['gemini_obs_db', 'gemini_obs_db.db', 'gemini_obs_db.orm', 'gemini_obs_db.utils'],
     install_requires = ['sqlalchemy >= 0.9.9', ]  # , 'pyfits', 'numpy']
 )
