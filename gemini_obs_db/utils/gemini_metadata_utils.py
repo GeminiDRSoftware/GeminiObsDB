@@ -12,7 +12,7 @@ from datetime import date, timedelta
 import dateutil.parser
 
 # from . import fits_storage_config
-from gemini_obs_db.db_config import use_utc
+from gemini_obs_db import db_config
 
 
 __all__ = [
@@ -1035,7 +1035,7 @@ def get_date_offset() -> timedelta:
     timedelta
         The `timedelta` to use for this application/server.
     """
-    if use_utc:
+    if db_config.use_utc:
         return ZERO_OFFSET
 
     # Calculate the proper offset to add to the date
