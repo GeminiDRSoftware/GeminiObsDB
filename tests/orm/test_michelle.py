@@ -6,7 +6,6 @@ from gemini_obs_db.orm.michelle import Michelle
 from tests.file_helper import ensure_file
 import gemini_obs_db.db_config as dbc
 
-ß
 def test_michelle(monkeypatch):
     monkeypatch.setattr(dbc, "storage_root", "/tmp")
 
