@@ -39,7 +39,7 @@ pipeline {
         stage('Building Docker Containers') {
             steps {
                 script {
-                    def geminiobsdbimage = docker.build("gemini/geminiobsdb:jenkins", " -f FitsStorageDB/docker/geminiobsdb-jenkins/Dockerfile .")
+                    def geminiobsdbimage = docker.build("gemini/geminiobsdb:jenkins", " -f docker/geminiobsdb-jenkins/Dockerfile .")
                     sh '''
                     echo "Clear existing Docker infrastructure to start with a blank slate"
                     docker network create geminiobsdb-jenkins || true
