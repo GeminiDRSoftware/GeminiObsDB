@@ -110,7 +110,7 @@ WORKDIR /opt/FitsStorageDB
 #    -I /usr/include/cfitsio -L/usr/lib64/
 
 # COPY FitsStorage/fitsverify /opt/fitsverify
-COPY FitsStorageDB/docker/wait-for-postgres.sh /
+COPY docker/wait-for-postgres.sh /
 RUN chmod a+x /wait-for-postgres.sh
 
 # CYTHON STEP FOR DRAGONS
