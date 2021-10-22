@@ -47,7 +47,7 @@ pipeline {
                     '''
                     def postgres = docker.image('postgres:12').withRun(" --network geminiobsdb-jenkins --name obsdata-jenkins -e POSTGRES_USER=fitsdata -e POSTGRES_PASSWORD=fitsdata -e POSTGRES_DB=fitsdata") { c ->
                         try {
-                            docker.image('gemini/geminiobsdb:jenkins').inside(" --name geminiobsdb-jenkins -v reports:/data/reports -v /data/pytest_tmp:/tmp  --network geminiobsdb-jenkins -e STORAGE_ROOT=/tmp/jenkins_pytest/dataflow -e GEMINI_OBS_DB_URL=\"postgresql://fitsdata:fitsdata@obsdata-jenkins/fitsdata\" TEST_IMAGE_PATH=/tmp/archive_test_images -e TEST_IMAGE_CACHE=/tmp/cached_archive_test_images -e CREATE_TEST_DB=False -e PYTHONPATH=/opt/DRAGONS:/opt/FitsStorageDB") {
+                            docker.image('gemini/geminiobsdb:jenkins').inside(" -v reports:/data/reports -v /data/pytest_tmp:/tmp  --network geminiobsdb-jenkins -e STORAGE_ROOT=/tmp/jenkins_pytest/dataflow -e GEMINI_OBS_DB_URL=\"postgresql://fitsdata:fitsdata@obsdata-jenkins/fitsdata\" TEST_IMAGE_PATH=/tmp/archive_test_images -e TEST_IMAGE_CACHE=/tmp/cached_archive_test_images -e CREATE_TEST_DB=False -e PYTHONPATH=/opt/DRAGONS:/opt/FitsStorageDB") {
                                 sh 'python3 /opt/FitsStorageDB/gemini_obs_db/scripts/create_tables.py --url postgresql://fitsdata:fitsdata@obsdata-jenkins/fitsdata'
                                 echo "Running tests against docker containers"
                                 sh  '''
