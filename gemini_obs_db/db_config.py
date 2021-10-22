@@ -1,5 +1,7 @@
 from os.path import join
 
+import os
+
 
 __all__ = [
     "using_apache",
@@ -21,7 +23,7 @@ use_utc = False
 z_staging_area = ''
 storage_root = ''
 sqlite_db_path = join(storage_root, 'gemini_obs_db.db')
-database_url = 'sqlite:///' + sqlite_db_path
+database_url = os.getenv('GEMINI_OBS_DB_URL', 'sqlite:///' + sqlite_db_path)
 
 # These two are only used if we are using a Postgres database
 # However, we define them anyway so they are available for import
