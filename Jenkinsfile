@@ -58,6 +58,7 @@ pipeline {
                                     '''
                             }
                         } catch (exc) {
+                            sh "docker logs geminiobsdb-jenkins"
                             throw exc
                         }
                     }
