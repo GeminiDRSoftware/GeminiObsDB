@@ -121,7 +121,7 @@ RUN mkdir -p /.specutils && \
     chmod oug+rwx /.specutils
 
 # Setup env
-ENV GEMINI_OBS_DB_URL postgresql://fitsdata:fitsdata@obsdata-jenkins/fitsdata'
+ENV GEMINI_OBS_DB_URL postgresql://fitsdata:fitsdata@obsdata-jenkins/fitsdata
 ENV PGPASSWORD fitsdata
 
 CMD ["bash"]
