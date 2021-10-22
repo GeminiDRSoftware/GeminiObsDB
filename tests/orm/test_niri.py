@@ -4,11 +4,11 @@ from gemini_obs_db.orm.file import File
 from gemini_obs_db.orm.header import Header
 from gemini_obs_db.orm.niri import Niri
 from tests.file_helper import ensure_file
-import fits_storage.fits_storage_config as fsc
+import gemini_obs_db.db_config as dbc
 
 
 def test_niri(monkeypatch):
-    monkeypatch.setattr(fsc, "storage_root", "/tmp")
+    monkeypatch.setattr(dbc, "storage_root", "/tmp")
 
     data_file = 'N20180329S0134.fits'
 

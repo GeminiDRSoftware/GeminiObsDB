@@ -4,11 +4,11 @@ from gemini_obs_db.orm.file import File
 from gemini_obs_db.orm.gsaoi import Gsaoi
 from gemini_obs_db.orm.header import Header
 from tests.file_helper import ensure_file
-import fits_storage.fits_storage_config as fsc
+import gemini_obs_db.db_config as dbc
 
 
 def test_gsaoi(monkeypatch):
-    monkeypatch.setattr(fsc, "storage_root", "/tmp")
+    monkeypatch.setattr(dbc, "storage_root", "/tmp")
 
     data_file = 'S20181018S0151.fits'
 

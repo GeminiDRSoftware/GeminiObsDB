@@ -4,11 +4,11 @@ from gemini_obs_db.orm.file import File
 from gemini_obs_db.orm.header import Header
 from gemini_obs_db.orm.nici import Nici
 from tests.file_helper import ensure_file
-import fits_storage.fits_storage_config as fsc
+import gemini_obs_db.db_config as dbc
 
 
 def test_nici(monkeypatch):
-    monkeypatch.setattr(fsc, "storage_root", "/tmp")
+    monkeypatch.setattr(dbc, "storage_root", "/tmp")
 
     data_file = 'S20130123S0131.fits'
 
@@ -27,7 +27,7 @@ def test_nici(monkeypatch):
 
 
 def test_nici_cal(monkeypatch):
-    monkeypatch.setattr(fsc, "storage_root", "/tmp")
+    monkeypatch.setattr(dbc, "storage_root", "/tmp")
 
     data_file = 'S20130124S0036.fits'
 
