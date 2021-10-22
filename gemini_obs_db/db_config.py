@@ -21,7 +21,7 @@ __all__ = [
 using_apache = False
 use_utc = False
 z_staging_area = ''
-storage_root = ''
+storage_root = os.getenv('STORAGE_ROOT', '')
 sqlite_db_path = join(storage_root, 'gemini_obs_db.db')
 database_url = os.getenv('GEMINI_OBS_DB_URL', 'sqlite:///' + sqlite_db_path)
 

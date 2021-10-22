@@ -123,5 +123,9 @@ RUN mkdir -p /.specutils && \
 # Setup env
 ENV GEMINI_OBS_DB_URL postgresql://fitsdata:fitsdata@obsdata-jenkins/fitsdata
 ENV PGPASSWORD fitsdata
+ENV STORAGE_ROOT /tmp/jenkins_pytest/dataflow
+ENV TEST_IMAGE_PATH /tmp/archive_test_images
+ENV TEST_IMAGE_CACHE /tmp/cached_archive_test_images
+ENV CREATE_TEST_DB False
 
 CMD ["bash"]
