@@ -274,7 +274,7 @@ class AstroDataFileParser(FileParser):
         return airmass
 
     def azimuth(self) -> Union[float, None]:
-        azimuth = self._try_or_none(self.ad.azimuth, "Unable to determine azimuth from datafile")
+        azimuth = self._try_or_none(lambda: self.ad.azimuth, "Unable to determine azimuth from datafile")
         if isinstance(azimuth, str):
             azimuth = dmstodeg(azimuth)
         return azimuth
@@ -283,7 +283,7 @@ class AstroDataFileParser(FileParser):
         return self._try_or_none(lambda: self.ad.camera(pretty=True), "Unable to parse camera from header")
 
     def cass_rotator_pa(self):
-        return self._try_or_none(self.ad.cass_rotator_pa, "Unable to parse cass rotator pa")
+        return self._try_or_none(lambda: self.ad.cass_rotator_pa, "Unable to parse cass rotator pa")
 
     def central_wavelength(self):
         if 'SPECT' in self.ad.tags and 'GPI' not in self.ad.tags:
@@ -292,10 +292,10 @@ class AstroDataFileParser(FileParser):
         return None
 
     def coadds(self):
-        return self._try_or_none(self.ad.coadds, 'Unable to read co-adds from header')
+        return self._try_or_none(lambda: self.ad.coadds, 'Unable to read co-adds from header')
 
     def data_label(self) -> str:
-        data_label = self._try_or_none(self.ad.data_label, 'Unable to parse datalabel from header',
+        data_label = self._try_or_none(lambda: self.ad.data_label, 'Unable to parse datalabel from header',
                                        convert_fn=lambda x: str(x).upper())
         if data_label is None:
             data_label = ''
@@ -304,7 +304,7 @@ class AstroDataFileParser(FileParser):
     def dec(self) -> Union[float, None]:
         if 'AZEL_TARGET' in self.ad.tags:
             return None
-        dec = self._try_or_none(self.ad.dec, 'Unable to parse DEC from header')
+        dec = self._try_or_none(lambda: self.ad.dec, 'Unable to parse DEC from header')
         if type(dec) is str:
             dec = dectodeg(dec)
         if dec is not None and (dec > 90.0 or dec < -90.0):
@@ -312,31 +312,31 @@ class AstroDataFileParser(FileParser):
         return dec
 
     def detector_binning(self) -> str:
-        dvx = self._try_or_none(self.ad.detector_x_bin, "Unable to parse detector x bin from header")
-        dvy = self._try_or_none(self.ad.detector_y_bin, "Unable to parse detector y bin form header")
+        dvx = self._try_or_none(lambda: self.ad.detector_x_bin, "Unable to parse detector x bin from header")
+        dvy = self._try_or_none(lambda: self.ad.detector_y_bin, "Unable to parse detector y bin form header")
         if (dvx is not None) and (dvy is not None):
             return "%dx%d" % (dvx, dvy)
         return None
 
     def detector_roi_setting(self):
-        return self._try_or_none(self.ad.detector_roi_setting, "Unable to parse ROI setting from header")
+        return self._try_or_none(lambda: self.ad.detector_roi_setting, "Unable to parse ROI setting from header")
 
     def disperser(self) -> Union[str, None]:
         # Need to remove invalid characters in disperser names, eg gnirs has
         # slashes
-        disperser = self._try_or_none(self.ad.disperser, "Unable to read disperser information from datafile")
+        disperser = self._try_or_none(lambda: self.ad.disperser, "Unable to read disperser information from datafile")
         if disperser is not None:
             return disperser.replace('/', '_')
         return None
 
     def elevation(self) -> Union[float, None]:
-        elevation = self._try_or_none(self.ad.elevation, "Unable to determine elevation from datafile")
+        elevation = self._try_or_none(lambda: self.ad.elevation, "Unable to determine elevation from datafile")
         if isinstance(elevation, str):
             elevation = dmstodeg(elevation)
         return elevation
 
     def exposure_time(self) -> Union[float, None]:
-        exposure_time = self._try_or_none(self.ad.exposure_time, "Unable to parse exposure time from header")
+        exposure_time = self._try_or_none(lambda: self.ad.exposure_time, "Unable to parse exposure time from header")
 
         # Protect the database from field overflow from junk.
         # The datatype is precision=8, scale=4
@@ -360,17 +360,17 @@ class AstroDataFileParser(FileParser):
                                  "Unable to parse focal plane mask in header")
 
     def gain_setting(self) -> str:
-        return self._try_or_none(self.ad.gain_setting, "Unable to parse gain_setting from header",
+        return self._try_or_none(lambda: self.ad.gain_setting, "Unable to parse gain_setting from header",
                                  convert_fn=str)
 
     def gcal_lamp(self) -> str:
-        return self._try_or_none(self.ad.gcal_lamp, "Unable to parse gcal_lamp from header")
+        return self._try_or_none(lambda: self.ad.gcal_lamp, "Unable to parse gcal_lamp from header")
 
     def instrument(self) -> str:
         print("In AstroDataParser for instrument")
         print(f"ad.instrument is {self.ad.instrument}")
         print(f"gemini_instrument(x) is {gemini_instrument(self.ad.instrument, other=True)}")
-        retval = self._try_or_none(self.ad.instrument, 'Unable to read instrument from header',
+        retval = self._try_or_none(lambda: self.ad.instrument, 'Unable to read instrument from header',
                                  convert_fn=lambda x: gemini_instrument(x, other=True))
         print(f"Got return of {retval}")
         return retval
@@ -381,7 +381,7 @@ class AstroDataFileParser(FileParser):
         return (lgsloop == 'CLOSED') or (lgustage == 'IN')
 
     def local_time(self):
-        return self._try_or_none(self.ad.local_time, 'Unable to parse local time from header')
+        return self._try_or_none(lambda: self.ad.local_time, 'Unable to parse local time from header')
 
     def mode(self) -> str:
         mode = 'imaging'
@@ -398,19 +398,19 @@ class AstroDataFileParser(FileParser):
         return mode
 
     def object(self) -> str:
-        return self._try_or_none(self.ad.object, 'Unable to parse object from header')
+        return self._try_or_none(lambda: self.ad.object, 'Unable to parse object from header')
 
     def observation_class(self) -> str:
-        return self._try_or_none(self.ad.observation_class, "Unable to determine observation class in datafile",
+        return self._try_or_none(lambda: self.ad.observation_class, "Unable to determine observation class in datafile",
                                  convert_fn=gemini_observation_class)
 
     def observation_id(self) -> str:
-        obsid = self._try_or_none(self.ad.observation_id, 'Unable to parse Observation ID from header',
+        obsid = self._try_or_none(lambda: self.ad.observation_id, 'Unable to parse Observation ID from header',
                                   convert_fn=lambda x: str(x).upper())
         return obsid
 
     def observation_type(self) -> str:
-        observation_type = self._try_or_none(self.ad.observation_type,
+        observation_type = self._try_or_none(lambda: self.ad.observation_type,
                                              "Unable to determine observation type in datafile",
                                              convert_fn=gemini_observation_type)
         if 'PINHOLE' in self.ad.tags:
@@ -444,7 +444,7 @@ class AstroDataFileParser(FileParser):
         return procmode
 
     def program_id(self) -> str:
-        return self._try_or_none(self.ad.program_id, 'Unable to read Program ID from header',
+        return self._try_or_none(lambda: self.ad.program_id, 'Unable to read Program ID from header',
                                  convert_fn=lambda x: str(x).upper())
 
     def proprietary_coordinates(self) -> bool:
@@ -463,7 +463,7 @@ class AstroDataFileParser(FileParser):
         if self.observation_type() == 'MASK':
             return 'Pass'
         else:
-            qa_state = self._try_or_none(self.ad.qa_state, 'Unable to parse qa_state')
+            qa_state = self._try_or_none(lambda: self.ad.qa_state, 'Unable to parse qa_state')
             if qa_state not in ['Fail', 'CHECK', 'Undefined', 'Usable', 'Pass']:
                 qa_state = 'Undefined'
             return qa_state
@@ -471,7 +471,7 @@ class AstroDataFileParser(FileParser):
     def ra(self) -> Union[float, None]:
         if 'AZEL_TARGET' in self.ad.tags:
             return None
-        ra = self._try_or_none(self.ad.ra, 'Unable to parse RA from header')
+        ra = self._try_or_none(lambda: self.ad.ra, 'Unable to parse RA from header')
         if type(ra) is str:
             ra = ratodeg(ra)
         if ra is not None and (ra > 360.0 or ra < 0.0):
@@ -479,23 +479,23 @@ class AstroDataFileParser(FileParser):
         return ra
 
     def raw_bg(self) -> Union[float, None]:
-        return self._try_or_none(self.ad.raw_bg, "Unable to parse Raw BG from header")
+        return self._try_or_none(lambda: self.ad.raw_bg, "Unable to parse Raw BG from header")
 
     def raw_cc(self) -> Union[float, None]:
-        return self._try_or_none(self.ad.raw_cc, "Unable to parse Raw CC from header")
+        return self._try_or_none(lambda: self.ad.raw_cc, "Unable to parse Raw CC from header")
 
     def raw_iq(self) -> Union[float, None]:
-        return self._try_or_none(self.ad.raw_iq, "Unable to parse Raw IQ from header")
+        return self._try_or_none(lambda: self.ad.raw_iq, "Unable to parse Raw IQ from header")
 
     def raw_wv(self) -> Union[float, None]:
-        return self._try_or_none(self.ad.raw_wv, "Unable to parse Raw WV from header")
+        return self._try_or_none(lambda: self.ad.raw_wv, "Unable to parse Raw WV from header")
 
     def read_mode(self) -> Union[str, None]:
-        return self._try_or_none(self.ad.read_mode, "Unable to parse read_mode from header",
+        return self._try_or_none(lambda: self.ad.read_mode, "Unable to parse read_mode from header",
                                  convert_fn=lambda x: str(x).replace(' ', '_'))
 
     def read_speed_setting(self):
-        return self._try_or_none(self.ad.read_speed_setting, "Unable to parse read speed from header",
+        return self._try_or_none(lambda: self.ad.read_speed_setting, "Unable to parse read speed from header",
                                  require_in=gemini_readspeed_settings)
 
     def reduction(self):
@@ -534,16 +534,16 @@ class AstroDataFileParser(FileParser):
             return None
 
     def requested_bg(self) -> Union[float, None]:
-        return self._try_or_none(self.ad.requested_bg, "Unable to parse requested BG from header")
+        return self._try_or_none(lambda: self.ad.requested_bg, "Unable to parse requested BG from header")
 
     def requested_cc(self) -> Union[float, None]:
-        return self._try_or_none(self.ad.requested_cc, "Unable to parse requested CC from header")
+        return self._try_or_none(lambda: self.ad.requested_cc, "Unable to parse requested CC from header")
 
     def requested_iq(self) -> Union[float, None]:
-        return self._try_or_none(self.ad.requested_iq, "Unable to parse requested IQ from header")
+        return self._try_or_none(lambda: self.ad.requested_iq, "Unable to parse requested IQ from header")
 
     def requested_wv(self) -> Union[float, None]:
-        return self._try_or_none(self.ad.requested_wv, "Unable to parse requested WV from header")
+        return self._try_or_none(lambda: self.ad.requested_wv, "Unable to parse requested WV from header")
 
     def site_monitoring(self) -> bool:
         """
@@ -556,7 +556,7 @@ class AstroDataFileParser(FileParser):
         bool
             Returns `True` when instrument `GS_ALLSKYCAMERA`
         """
-        instr = self._try_or_none(self.ad.instrument, 'Unable to parse instrument from header')
+        instr = self._try_or_none(lambda: self.ad.instrument, 'Unable to parse instrument from header')
         if instr == 'GS_ALLSKYCAMERA':
             return True
         else:
@@ -569,7 +569,7 @@ class AstroDataFileParser(FileParser):
         return gemini_telescope(self.ad.telescope())
 
     def ut_datetime(self) -> Union[datetime, None]:
-        return self._try_or_none(self.ad.ut_datetime, 'Unable to parse UT datetime from header')
+        return self._try_or_none(lambda: self.ad.ut_datetime, 'Unable to parse UT datetime from header')
 
     def ut_datetime_secs(self) -> Union[int, None]:
         ut_datetime = self.ut_datetime()
@@ -580,13 +580,13 @@ class AstroDataFileParser(FileParser):
             return None
 
     def wavefront_sensor(self):
-        return self._try_or_none(self.ad.wavefront_sensor, "Unable to read wavefront sensor from header")
+        return self._try_or_none(lambda: self.ad.wavefront_sensor, "Unable to read wavefront sensor from header")
 
     def wavelength_band(self):
-        return self._try_or_none(self.ad.wavelength_band, "Unable to read wavelength band from header")
+        return self._try_or_none(lambda: self.ad.wavelength_band, "Unable to read wavelength band from header")
 
     def well_depth_setting(self):
-        return self._try_or_none(self.ad.well_depth_setting, "Unable to parse well depth setting from header",
+        return self._try_or_none(lambda: self.ad.well_depth_setting, "Unable to parse well depth setting from header",
                                  require_in=gemini_welldepth_settings)
 
 
