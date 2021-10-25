@@ -163,6 +163,7 @@ class Header(Base):
             else:
                 fullpath = diskfile.fullpath()
             ad = astrodata.open(fullpath)
+        print(f"Building parser for header, tags is {ad.tags}")
         parser = build_parser(ad, log)
 
         # Check for site_monitoring data. Currently, this only comprises
