@@ -370,12 +370,8 @@ class AstroDataFileParser(FileParser):
         return self._try_or_none(self.ad.gcal_lamp, "Unable to parse gcal_lamp from header")
 
     def instrument(self) -> str:
-        print("In AstroDataParser for instrument")
-        print(f"ad.instrument is {self.ad.instrument}")
-        print(f"gemini_instrument(x) is {gemini_instrument(self.ad.instrument, other=True)}")
         retval = self._try_or_none(self.ad.instrument, 'Unable to read instrument from header',
                                  convert_fn=lambda x: gemini_instrument(x, other=True))
-        print(f"Got return of {retval}")
         return retval
 
     def laser_guide_star(self) -> bool:
@@ -786,7 +782,6 @@ class GMOSFileParser(AstroDataFileParser):
 
 def build_parser(ad, log) -> FileParser:
     if 'GMOS' in ad.tags:
-        print("Using GMOSFileParser")
         return GMOSFileParser(ad, log)
     elif ad.instrument().upper() == 'ALOPEKE':
         return AlopekeZorroFileParser(ad, default_telescope='Gemini-North')
@@ -795,5 +790,4 @@ def build_parser(ad, log) -> FileParser:
     elif ad.instrument().upper() == 'NICI':
         return NICIFileParser(ad, log)
     else:
-        print("Using AstroDataFileParser")
         return AstroDataFileParser(ad, log)
