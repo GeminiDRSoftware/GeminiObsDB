@@ -59,7 +59,7 @@ pipeline {
                                     export PYTHONPATH=/opt/DRAGONS:/opt/FitsStorageDB
                                     mkdir -p /tmp/archive_test_images
                                     mkdir -p /tmp/cached_archive_test_images
-                                    coverage run --omit "/usr/lib/*,/usr/local/*,/opt/DRAGONS/*" -m pytest /opt/FitsStorageDB/tests
+                                    coverage run --omit "/usr/lib/*,/usr/local/*,/opt/DRAGONS/*,/opt/FitsStorageDB/tests/*" -m pytest /opt/FitsStorageDB/tests
                                     coverage report -m --fail-under=68
                                     '''
                             }
