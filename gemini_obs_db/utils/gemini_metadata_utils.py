@@ -938,6 +938,7 @@ class GeminiObservation:
                 self.valid = False
         else:
             self.observation_id = ''
+            self.valid = False
 
 
 class GeminiProgram:
