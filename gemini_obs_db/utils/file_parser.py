@@ -753,6 +753,16 @@ class IGRINSFileParser(AstroDataFileParser):
                 except Exception as e:
                     return None
 
+    def telescope(self) -> str:
+        """
+        IGRINS specifies the wrong telescope value with a ' ' in place of a '-'.
+
+        :return:  str name of telescope
+        """
+        retval = gemini_telescope(self.ad.telescope())
+        if retval is None and ' ' in self.ad.telescope():
+            return gemini_telescope(self.ad.telescope().replace(' ', '-'))
+
 
 class NICIFileParser(AstroDataFileParser):
     def exposure_time(self) -> Union[float, None]:
