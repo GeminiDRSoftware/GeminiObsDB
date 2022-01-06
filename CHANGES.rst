@@ -1,3 +1,26 @@
+1.0.1
+=====
+
+Other
+-----
+
+file_parser.py
+^^^^^^^^^^^^^^
+
+- Fix for bad telescope values from IGRINS [#2]
+- Properly detect IGRINS files and use the correct parser (IGRINS parser can handle uncorrected IGRINS files) [#3]
+
+gemini_metadata_utils.py
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+- Support for new-style non-site-specific program IDs [#1]
+
+header.py
+^^^^^^^^^
+
+- removed some debug output
+
+
 1.0.0
 =====
 

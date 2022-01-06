@@ -71,15 +71,16 @@ UT_DATETIME_SECS_EPOCH = datetime.datetime(2000, 1, 1, 0, 0, 0)
 # Also these substrings are used directly by the classes
 
 # This re matches a program id like GN-CAL20091020 with no groups
-calengre = r'G[NS]-(?:(?:CAL)|(?:ENG))20\d\d[01]\d[0123]\d'
+calengre_old = r'G[NS]-(?:(?:CAL)|(?:ENG))20\d\d[01]\d[0123]\d'
+calengre = r'G-20\d\d[ABFDLWVSX]-(?:(?:CAL)|(?:ENG))[01]\d[0123]\d'
 # This re matches a program id like GN-2009A-Q-23 with no groups
-scire = r'G[NS]-20\d\d[AB]-[A-Z]*-\d*'
+scire = r'G([NS]?)-20\d\d[ABFDLWVSX]-[A-Z]*-\d*'
 
 # This matches a program id
-progre = r'(?:^%s$)|(?:^%s$)' % (calengre, scire)
+progre = r'(?:^%s$)|(?:^%s$)|(?:^%s$)' % (calengre, scire, calengre_old)
 
 # This matches an observation id with the project id and obsnum as groups
-obsre = r'((?:^%s)|(?:^%s))-(\d*)$' % (calengre, scire)
+obsre = r'((?:^%s)|(?:^%s)|(?:^%s))-(\d*)$' % (calengre, scire, calengre_old)
 
 # Here are some lists of defined detector settings
 gemini_gain_settings = ('high', 'low')
@@ -742,7 +743,7 @@ def gmos_gratingname(string: str) -> str:
     return string if string in gmos_gratings else ''
 
 
-gmosfpmaskcre = re.compile(r'^G[NS](20\d\d)[AB](.)(\d\d\d)-(\d\d)$')
+gmosfpmaskcre = re.compile(r'^G[NS]?(20\d\d)[ABFDLWVSX](.)(\d\d\d)-(\d\d)$')
 gmos_facility_plane_masks = (
     'NS2.0arcsec', 'IFU-R', 'IFU-B', 'focus_array_new', 'Imaging', '2.0arcsec',
     'NS1.0arcsec', 'NS0.75arcsec', '5.0arcsec', '1.5arcsec', 'IFU-2', 'NS1.5arcsec',
@@ -828,7 +829,7 @@ def percentilestring(num: int, type: str) -> str:
 # With 3 groups - program_id, obsnum, dlnum
 # This also allows for an optional -blah on the end (processed biases etc)
 
-dlcre = re.compile(r'^((?:%s)|(?:%s))-(\d*)-(\d*)(?:-(\w*))?$' % (calengre, scire))
+dlcre = re.compile(r'^((?:%s)|(?:%s)|(?:%s))-(\d*)-(\d*)(?:-(\w*))?$' % (calengre, scire, calengre_old))
 
 
 class GeminiDataLabel:
@@ -989,15 +990,19 @@ class GeminiProgram:
             program_id = program_id.strip()
 
         self.program_id = program_id
-
         # Check for the CAL / ENG form
-        ec_match = re.match(r"^(G[NS])-((?:CAL)|(?:ENG))(20[012]\d[01]\d[0123]\d)$", program_id)
-        sci_match = re.match(r"^(G[NS])-(20[012]\d[AB])-(Q|C|SV|QS|DD|LP|FT|DS|ENG|CAL)-(\d+)$", program_id)
-        if ec_match:
+        ec_match_old = re.match(r"^(G[NS]?)-((?:CAL)|(?:ENG))(20[012]\d[01]\d[0123]\d)$", program_id)
+        ec_match = re.match(r'^G-20\d\d[ABFDLWVSX]-(?:(?:CAL)|(?:ENG))[01]\d[0123]\d$', program_id)
+        sci_match = re.match(r"^(G[NS]?)-(20[012]\d[ABFDLWVSX])-(Q|C|SV|QS|DD|LP|FT|DS|ENG|CAL)-(\d+)$", program_id)
+        if ec_match_old:
             # Valid eng / cal form
             self.valid = True
-            self.is_eng = ec_match.group(2) == 'ENG'
-            self.is_cal = ec_match.group(2) == 'CAL'
+            self.is_eng = ec_match_old.group(2) == 'ENG'
+            self.is_cal = ec_match_old.group(2) == 'CAL'
+        elif ec_match:
+            self.valid = True
+            self.is_eng = ec_match_old.group(1) == 'ENG'
+            self.is_cal = ec_match_old.group(1) == 'CAL'
         elif sci_match:
             # Valid science form
             self.valid = True

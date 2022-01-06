@@ -163,7 +163,6 @@ class Header(Base):
             else:
                 fullpath = diskfile.fullpath()
             ad = astrodata.open(fullpath)
-        print(f"Building parser for header, tags is {ad.tags}")
         parser = build_parser(ad, log)
 
         # Check for site_monitoring data. Currently, this only comprises
@@ -251,7 +250,7 @@ class Header(Base):
         self.pre_image = parser.pre_image()
 
         # Get the types list
-        self.types = str(ad.tags)
+        self.types = str(ad.tags) if hasattr(ad, 'tags') else None
 
         return
 
