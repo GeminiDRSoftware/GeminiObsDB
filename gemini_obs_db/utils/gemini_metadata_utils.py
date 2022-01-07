@@ -1014,9 +1014,9 @@ class GeminiProgram:
             self.is_eng = sci_match.group(3) == 'ENG'
             self.is_cal = sci_match.group(3) == 'CAL'
 
-            # If the program number contained leading zeros, strip them out of
+            # If the program id is OLD style and program number contained leading zeros, strip them out of
             # the official program_id
-            if sci_match.group(4)[0] == '0':
+            if sci_match.group(4)[0] == '0' and not program_id.startswith('G-'):
                 prog_num = int(sci_match.group(4))
                 self.program_id = "%s-%s-%s-%s" % (sci_match.group(1),
                                                    sci_match.group(2),
