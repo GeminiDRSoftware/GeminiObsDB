@@ -6,4 +6,4 @@ def test_try_or_none():
 
     def throw_type_error():
         raise TypeError()
-    assert(fp._try_or_none(throw_type_error) is None)
+    assert(fp._try_or_none(throw_type_error, "pytest") is None)
