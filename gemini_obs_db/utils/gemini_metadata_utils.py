@@ -992,7 +992,7 @@ class GeminiProgram:
         self.program_id = program_id
         # Check for the CAL / ENG form
         ec_match_old = re.match(r"^(G[NS]?)-((?:CAL)|(?:ENG))(20[012]\d[01]\d[0123]\d)$", program_id)
-        ec_match = re.match(r'^G-20\d\d[ABFDLWVSX]-(?:(?:CAL)|(?:ENG))[01]\d[0123]\d$', program_id)
+        ec_match = re.match(r'^G-20\d\d[ABFDLWVSX]-(?:(?:CAL)|(?:ENG))-[01]\d[0123]\d$', program_id)
         sci_match = re.match(r"^(G[NS]?)-(20[012]\d[ABFDLWVSX])-(Q|C|SV|QS|DD|LP|FT|DS|ENG|CAL)-(\d+)$", program_id)
         if ec_match_old:
             # Valid eng / cal form
@@ -1014,9 +1014,9 @@ class GeminiProgram:
             self.is_eng = sci_match.group(3) == 'ENG'
             self.is_cal = sci_match.group(3) == 'CAL'
 
-            # If the program number contained leading zeros, strip them out of
+            # If the program id is OLD style and program number contained leading zeros, strip them out of
             # the official program_id
-            if sci_match.group(4)[0] == '0':
+            if sci_match.group(4)[0] == '0' and not program_id.startswith('G-'):
                 prog_num = int(sci_match.group(4))
                 self.program_id = "%s-%s-%s-%s" % (sci_match.group(1),
                                                    sci_match.group(2),
