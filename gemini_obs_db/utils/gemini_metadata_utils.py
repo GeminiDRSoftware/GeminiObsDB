@@ -1098,7 +1098,7 @@ def get_time_period(start: str, end: str = None, as_date: bool = False) \
         # Flip them round if reversed
         if startdt > enddt:
             startdt, enddt = enddt, startdt
-    if 'T' not in end:
+    if end is None or 'T' not in end:
         # day value, need to +1
         enddt += ONEDAY_OFFSET
 
