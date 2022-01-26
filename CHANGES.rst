@@ -1,3 +1,14 @@
+1.0.3
+=====
+
+User-Facing Changes
+-------------------
+
+gemini_metadata_utils
+^^^^^^^^^^^^^
+
+- Support for YYYYMMDDTHHMMSS-YYYYMMDDTHHMMSS style datetime ranges for SCALeS [#4]
+
 1.0.2
 =====
 

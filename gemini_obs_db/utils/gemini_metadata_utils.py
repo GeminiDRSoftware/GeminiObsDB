@@ -298,6 +298,7 @@ def gemini_date(string: str, as_datetime: bool = False, offset: timedelta = ZERO
     """
     dt_to_text = lambda x: x.date().strftime('%Y%m%d')
     dt_to_text_full = lambda x: x.strftime('%Y-%m-%dT%H:%M:%S')
+    dt_to_text_short = lambda x: x.strftime('%Y%m%dT%H%M%S')
 
     if string in {'today', 'tonight'}:
         string = get_fake_ut()
@@ -325,7 +326,7 @@ def gemini_date(string: str, as_datetime: bool = False, offset: timedelta = ZERO
         except ValueError:
             pass
 
-    if len(string) >= 14 and 'T' in string and '=' not in string:
+    if len(string) >= 14 and 'T' in string and ':' in string and '=' not in string:
         # Parse an ISO style datestring, so 2019-12-10T11:22:33.444444
         try:
             # TODO this is dateutil bug #786, so for now we truncate to 6 digits
@@ -335,6 +336,18 @@ def gemini_date(string: str, as_datetime: bool = False, offset: timedelta = ZERO
                     string = string[:lastdot - len(string)]
             # TODO end of workaround
             dt = dateutil.parser.isoparse("%sZ" % string) + offset
+            # strip back out time zone as the rest of the code does not support it
+            dt = dt.replace(tzinfo=None)
+            if DATE_LIMIT_LOW <= dt < DATE_LIMIT_HIGH:
+                return dt_to_text_full(dt) if not as_datetime else dt
+        except ValueError as ve:
+            pass
+
+    if len(string) >= 14 and 'T' in string and ':' not in string and '=' not in string and '-' not in string:
+        # Parse an compressed style datestring, so 20191210T112233
+        try:
+            dt = dateutil.parser.isoparse("%s-%s-%sT%s:%s:%sZ" % (string[0:4], string[4:6], string[6:8],
+                                                                  string[9:11], string[11:13], string[13:15])) # + offset
             # strip back out time zone as the rest of the code does not support it
             dt = dt.replace(tzinfo=None)
             if DATE_LIMIT_LOW <= dt < DATE_LIMIT_HIGH:
@@ -1085,7 +1098,9 @@ def get_time_period(start: str, end: str = None, as_date: bool = False) \
         # Flip them round if reversed
         if startdt > enddt:
             startdt, enddt = enddt, startdt
-    enddt += ONEDAY_OFFSET
+    if 'T' not in end:
+        # day value, need to +1
+        enddt += ONEDAY_OFFSET
 
     if as_date:
         return startdt.date(), enddt.date()
