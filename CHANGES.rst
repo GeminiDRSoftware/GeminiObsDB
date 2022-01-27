@@ -1,3 +1,11 @@
+1.0.4
+=====
+
+gemini_metadata_utils.py
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+- fix for parsing of datalabels with updated regex
+
 1.0.3
 =====
 

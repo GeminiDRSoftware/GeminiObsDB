@@ -898,9 +898,9 @@ class GeminiDataLabel:
         dlm = dlcre.match(self.datalabel)
         if dlm:
             self.projectid = dlm.group(1)
-            self.obsnum = dlm.group(2)
-            self.dlnum = dlm.group(3)
-            self.extension = dlm.group(4)
+            self.obsnum = dlm.group(3)
+            self.dlnum = dlm.group(4)
+            self.extension = dlm.group(5)
             self.project = GeminiProgram(self.projectid)
             self.observation_id = '%s-%s' % (self.projectid, self.obsnum)
             self.datalabel_noextension = '%s-%s-%s' % (self.projectid, self.obsnum, self.dlnum)
