@@ -5,6 +5,7 @@ gemini_metadata_utils.py
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 - fix for parsing of datalabels with updated regex
+- fix for checking for a datetime string when not handling a range
 
 1.0.3
 =====
