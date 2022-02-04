@@ -612,7 +612,7 @@ def gemini_procmode(string: str) -> str:
 
 
 obs_types = ('DARK', 'ARC', 'FLAT', 'BIAS', 'OBJECT', 'PINHOLE', 'RONCHI', 'CAL', 'FRINGE', 'MASK', 'STANDARD',
-             'SLITILLUM')
+             'SLITILLUM', 'BPM')
 
 
 def gemini_observation_type(string: str) -> str:
