@@ -668,7 +668,7 @@ def gemini_observation_class(string: str) -> str:
 reduction_states = ('RAW', 'PREPARED', 'PROCESSED_FLAT', 'PROCESSED_BIAS',
                     'PROCESSED_FRINGE', 'PROCESSED_ARC', 'PROCESSED_DARK',
                     'PROCESSED_TELLURIC', 'PROCESSED_SCIENCE', 'PROCESSED_STANDARD',
-                    'PROCESSED_SLITILLUM', 'PROCESSED_UNKNOWN')
+                    'PROCESSED_SLITILLUM', 'PROCESSED_BPM', 'PROCESSED_UNKNOWN')
 
 
 def gemini_reduction_state(string: str) -> str:
@@ -698,7 +698,7 @@ cal_types = (
     'ronchi_mask', 'spectwilight', 'lampoff_flat', 'qh_flat', 'specphot',
     'photometric_standard', 'telluric_standard', 'domeflat', 'lampoff_domeflat',
     'mask', 'polarization_standard', 'astrometric_standard', 'polarization_flat',
-    'processed_standard', 'processed_slitillum', 'slitillum',
+    'processed_standard', 'processed_slitillum', 'slitillum', 'bpm', 'processed_bpm'
 )
 
 
