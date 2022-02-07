@@ -12,7 +12,7 @@ from gemini_obs_db import db_config as dbc
 
 if dbc.database_url.startswith('postgresql://'):
     args = {'pool_size': dbc.postgres_database_pool_size, 'max_overflow': dbc.postgres_database_max_overflow,
-            'echo': False}
+            'echo': False, 'pool_pre_ping': True}
 else:
     args = {'echo': False}
 pg_db = create_engine(dbc.database_url, **args)

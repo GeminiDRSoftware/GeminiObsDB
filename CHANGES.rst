@@ -1,3 +1,11 @@
+1.0.5
+=====
+
+gemini_obs_db
+^^^^^^^^^^^^^
+
+- added pre-ping for Postgres connections so we don't use an expired connection
+
 1.0.4
 =====
 
