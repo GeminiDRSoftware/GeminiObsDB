@@ -943,7 +943,7 @@ class GeminiObservation:
             if match:
                 self.observation_id = observation_id
                 self.program = GeminiProgram(match.group(1))
-                self.obsnum = match.group(2)
+                self.obsnum = match.group(3)
                 self.valid = True
             else:
                 self.observation_id = ''

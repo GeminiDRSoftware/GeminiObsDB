@@ -1,3 +1,11 @@
+1.0.6
+=====
+
+gemini_metadata_utils.py
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+- fix parsing of observation number from new regex
+
 1.0.5
 =====
 
