@@ -1,3 +1,13 @@
+1.0.8
+=====
+
+file_parser
+^^^^^^^^^^^
+
+- WCS first, then fallback to repair WCS, then fallback to ra() or dec()
+- smarter about unexpected text format RA
+- error reporting for really bad RA/DEC values
+
 1.0.6
 =====
 

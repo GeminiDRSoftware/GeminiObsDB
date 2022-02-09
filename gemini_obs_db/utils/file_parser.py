@@ -606,13 +606,18 @@ class AlopekeZorroFileParser(AstroDataFileParser):
         if 'AZEL_TARGET' in self.ad.tags:
             return None
         try:
-            return self.ad.ra()
+            ra = self.ad.wcs_ra()
         except Exception:
             ctype1, ctype2, crval1, crval2 = self._extract_wcs()
             if ctype1 == 'RA---TAN' or ctype1 == 'RA--TAN':  # Zorro sometimes is broken with RA--TAN
                 ra = crval1
             if ctype2 == 'RA---TAN' or ctype2 == 'RA--TAN':  # Zorro sometimes is broken with RA--TAN
                 ra = crval2
+        if ra is None:
+            try:
+                ra = self.ad.ra()
+            except Exception:
+                self._log.warning(f"Final ra fallback, unable to determine ra for file {self.ad.filename}")
         if type(ra) is str:
             ra = ratodeg(ra)
         if ra is not None and (ra > 360.0 or ra < 0.0):
@@ -624,13 +629,18 @@ class AlopekeZorroFileParser(AstroDataFileParser):
             return None
         dec = None
         try:
-            dec = self.ad.dec()
+            dec = self.ad.wcs_dec()
         except Exception:
             ctype1, ctype2, crval1, crval2 = self._extract_wcs()
             if ctype1 == 'DEC--TAN':
                 dec = crval1
             if ctype2 == 'DEC--TAN':
                 dec = crval2
+        if dec is None:
+            try:
+                dec = self.ad.dec()
+            except Exception:
+                self._log.warning(f"Final dec fallback, unable to determine dec for file {self.ad.filename}")
         if type(dec) is str:
             dec = dectodeg(dec)
         if dec is not None and (dec > 90.0 or dec < -90.0):
