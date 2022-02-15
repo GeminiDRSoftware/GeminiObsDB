@@ -3,6 +3,7 @@ This is the gemini_metadata_utils module. It provides a number of utility
 classes and functions for parsing the metadata in Gemini FITS files.
 
 """
+from astropy.coordinates import Angle
 from typing import Union, Tuple
 
 import re
@@ -358,10 +359,30 @@ def gemini_date(string: str, as_datetime: bool = False, offset: timedelta = ZERO
     return '' if not as_datetime else None
 
 
+def ratodeg(string: str) -> float:
+    """
+    A utility function that recognises an RA: HH:MM:SS.sss
+    Or a decimal degrees RA value
+    Returns a float in decimal degrees if it is valid, None otherwise
+    """
+    try:
+        return float(string)
+    except:
+        # ok, fall back to smart parsing
+        try:
+            return Angle(string).degree
+        except:
+            # unparseable
+            pass
+    return None
+
+
+# deprecated, used by ratodeg_old
 racre = re.compile(r'^([012]\d):([012345]\d):([012345]\d)(\.?\d*)$')
 
 
-def ratodeg(string: str) -> float:
+# deprecated
+def ratodeg_old(string: str) -> float:
     """
     A utility function that recognises an RA: HH:MM:SS.sss
     Or a decimal degrees RA value
@@ -395,10 +416,31 @@ def ratodeg(string: str) -> float:
     return degs
 
 
+
+def dectodeg(string: str) -> float:
+    """
+    A utility function that recognises a Dec: [+-]DD:MM:SS.sss
+    Returns a float in decimal degrees if it is valid, None otherwise
+    """
+    try:
+        value = float(string)
+        if value >= -90.0 and value <= 90.0:
+            return value
+    except:
+        try:
+            a = Angle(string)
+            return a.degree
+        except:
+            # unparseable
+            return None
+
+
+# deprecated, used by dectodeg_old
 deccre = re.compile(r'^([+-]?)(\d\d):([012345]\d):([012345]\d)(\.?\d*)$')
 
 
-def dectodeg(string: str) -> float:
+# deprecated
+def dectodeg_old(string: str) -> float:
     """
     A utility function that recognises a Dec: [+-]DD:MM:SS.sss
     Returns a float in decimal degrees if it is valid, None otherwise
