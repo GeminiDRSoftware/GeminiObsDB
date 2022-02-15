@@ -1,3 +1,11 @@
+1.0.9
+=====
+
+gemini_metadata_utils
+^^^^^^^^^^^^^^^^^^^^^
+
+- using astropy for string parsing of RA/DEC coordinates
+
 1.0.8
 =====
 
