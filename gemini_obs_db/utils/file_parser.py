@@ -805,13 +805,16 @@ class GMOSFileParser(AstroDataFileParser):
 def build_parser(ad, log) -> FileParser:
     if 'GMOS' in ad.tags:
         return GMOSFileParser(ad, log)
-    elif ad.instrument().upper() == 'ALOPEKE':
-        return AlopekeZorroFileParser(ad, default_telescope='Gemini-North')
-    elif ad.instrument().upper() == 'ZORRO':
-        return AlopekeZorroFileParser(ad, default_telescope='Gemini-South')
-    elif ad.instrument().upper() == 'NICI':
-        return NICIFileParser(ad, log)
-    elif ad.instrument().upper() == 'IGRINS':
-        return IGRINSFileParser(ad, log)
-    else:
-        return AstroDataFileParser(ad, log)
+    try:
+        if ad.instrument() is not None:
+            if ad.instrument().upper() == 'ALOPEKE':
+                return AlopekeZorroFileParser(ad, default_telescope='Gemini-North')
+            elif ad.instrument().upper() == 'ZORRO':
+                return AlopekeZorroFileParser(ad, default_telescope='Gemini-South')
+            elif ad.instrument().upper() == 'NICI':
+                return NICIFileParser(ad, log)
+            elif ad.instrument().upper() == 'IGRINS':
+                return IGRINSFileParser(ad, log)
+    except:
+        pass
+    return AstroDataFileParser(ad, log)
