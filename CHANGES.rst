@@ -1,3 +1,12 @@
+1.0.13
+======
+
+gemini_metadata_utils
+^^^^^^^^^^^^^^^^^^^^^
+
+- Allowing for - delimited extensions like QL-FLAT
+
+
 1.0.10
 ======
 

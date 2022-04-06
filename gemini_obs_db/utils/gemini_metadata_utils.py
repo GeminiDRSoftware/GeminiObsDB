@@ -884,7 +884,7 @@ def percentilestring(num: int, type: str) -> str:
 # With 3 groups - program_id, obsnum, dlnum
 # This also allows for an optional -blah on the end (processed biases etc)
 
-dlcre = re.compile(r'^((?:%s)|(?:%s)|(?:%s))-(\d*)-(\d*)(?:-(\w*))?$' % (calengre, scire, calengre_old))
+dlcre = re.compile(r'^((?:%s)|(?:%s)|(?:%s))-(\d*)-(\d*)(?:-([-\w]*))?$' % (calengre, scire, calengre_old))
 
 
 class GeminiDataLabel:
