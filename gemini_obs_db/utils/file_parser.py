@@ -352,7 +352,8 @@ class AstroDataFileParser(FileParser):
         # Knock illegal characters out of filter names. eg NICI %s.
         # Spaces to underscores.
         try:
-            filter_string = self.ad.filter_name(pretty=True)
+            filter_string = self._try_or_none(lambda: self.ad.filter_name(pretty=True),
+                                              "Unable to get filter name from header")
             if filter_string:
                 filter_string = filter_string.replace('%', '').replace(' ', '_')
             return filter_string
