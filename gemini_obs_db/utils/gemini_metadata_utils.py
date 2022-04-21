@@ -72,10 +72,20 @@ UT_DATETIME_SECS_EPOCH = datetime.datetime(2000, 1, 1, 0, 0, 0)
 # Also these substrings are used directly by the classes
 
 # This re matches a program id like GN-CAL20091020 with no groups
-calengre_old = r'G[NS]-(?:(?:CAL)|(?:ENG))20\d\d[01]\d[0123]\d'
-calengre = r'G-20\d\d[ABFDLWVSX]-(?:(?:CAL)|(?:ENG))-[01]\d[0123]\d'
-# This re matches a program id like GN-2009A-Q-23 with no groups
-scire = r'G([NS]?)-20\d\d[ABFDLWVSX]-[A-Z]*-\d*'
+calengre_old = r'G[NS]-((?:CAL)|(?:ENG))20\d\d[01]\d[0123]\d'
+calengre = r'^G[NS]?-20\d\d[ABFDLWVSX]-((?:CAL)|(?:ENG))-([A-Za-z0-9_]+-)?\d+'
+
+# G-YYYYT-M-BNNN  T is one of:
+#  A/B - regular semester program
+#  F - FT
+#  D - DD
+#  L - LP
+#  W - PW
+#  V - SV
+#  S - DS
+#  X - XT
+# M is observing mode "(Q/C), could add P for PV"
+scire = r"^(G[NS]?)-(20\d\d([A-Z]))-(Q|C|SV|QS|DD|LP|FT|DS|ENG|CAL)-(\d+)"
 
 # This matches a program id
 progre = r'(?:^%s$)|(?:^%s$)|(?:^%s$)' % (calengre, scire, calengre_old)
@@ -1046,36 +1056,41 @@ class GeminiProgram:
 
         self.program_id = program_id
         # Check for the CAL / ENG form
-        ec_match_old = re.match(r"^(G[NS]?)-((?:CAL)|(?:ENG))(20[012]\d[01]\d[0123]\d)$", program_id)
-        ec_match = re.match(r'^G-20\d\d[ABFDLWVSX]-(?:(?:CAL)|(?:ENG))-[01]\d[0123]\d$', program_id)
-        sci_match = re.match(r"^(G[NS]?)-(20[012]\d[ABFDLWVSX])-(Q|C|SV|QS|DD|LP|FT|DS|ENG|CAL)-(\d+)$", program_id)
+        ec_match_old = re.match(calengre_old + r'$', program_id)
+        ec_match = re.match(calengre + r'$', program_id)
+        sci_match = re.match(scire + r'$', program_id)
         if ec_match_old:
             # Valid eng / cal form
             self.valid = True
-            self.is_eng = ec_match_old.group(2) == 'ENG'
-            self.is_cal = ec_match_old.group(2) == 'CAL'
-        elif ec_match:
-            self.valid = True
             self.is_eng = ec_match_old.group(1) == 'ENG'
             self.is_cal = ec_match_old.group(1) == 'CAL'
+        elif ec_match:
+            self.valid = True
+            self.is_eng = ec_match.group(1) == 'ENG'
+            self.is_cal = ec_match.group(1) == 'CAL'
         elif sci_match:
             # Valid science form
             self.valid = True
-            self.is_q = sci_match.group(3) == 'Q'
-            self.is_c = sci_match.group(3) == 'C'
-            self.is_sv = sci_match.group(3) == 'SV'
-            self.is_ft = sci_match.group(3) == 'FT'
-            self.is_ds = sci_match.group(3) == 'DS'
-            self.is_eng = sci_match.group(3) == 'ENG'
-            self.is_cal = sci_match.group(3) == 'CAL'
+            self.is_q = sci_match.group(4) == 'Q'
+            self.is_c = sci_match.group(4) == 'C'
+            self.is_eng = sci_match.group(4) == 'ENG'
+            self.is_cal = sci_match.group(4) == 'CAL'
+            if program_id.startswith('G-'):
+                self.is_sv = sci_match.group(3) == 'V'
+                self.is_ft = sci_match.group(3) == 'F'
+                self.is_ds = sci_match.group(3) == 'S'
+            else:
+                self.is_sv = sci_match.group(4) == 'SV'
+                self.is_ft = sci_match.group(4) == 'FT'
+                self.is_ds = sci_match.group(4) == 'DS'
 
             # If the program id is OLD style and program number contained leading zeros, strip them out of
             # the official program_id
-            if sci_match.group(4)[0] == '0' and not program_id.startswith('G-'):
-                prog_num = int(sci_match.group(4))
+            if sci_match.group(5)[0] == '0' and not program_id.startswith('G-'):
+                prog_num = int(sci_match.group(5))
                 self.program_id = "%s-%s-%s-%s" % (sci_match.group(1),
                                                    sci_match.group(2),
-                                                   sci_match.group(3),
+                                                   sci_match.group(4),
                                                    prog_num)
 
         else:

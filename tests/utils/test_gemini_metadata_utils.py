@@ -1,6 +1,6 @@
 import pytest
 
-from gemini_obs_db.utils.gemini_metadata_utils import ratodeg, ratodeg_old, dectodeg, dectodeg_old
+from gemini_obs_db.utils.gemini_metadata_utils import ratodeg, ratodeg_old, dectodeg, dectodeg_old, GeminiProgram
 
 
 def test_ratodeg():
@@ -17,6 +17,36 @@ def test_dectodeg():
     dec_old = dectodeg_old(dec_str)
     assert(pytest.approx(dec, 24.345277777777778))
     assert(pytest.approx(dec_old, 24.345277777777778))
+
+
+def test_program_ids():
+    gp = GeminiProgram('G-2020A-Q-123')
+    assert gp.is_q
+    gp = GeminiProgram('G-2020A-C-123')
+    assert gp.is_c
+
+    gp = GeminiProgram('G-2020A-ENG-123')
+    assert gp.is_eng
+    gp = GeminiProgram('G-2020A-CAL-123')
+    assert gp.is_cal
+    gp = GeminiProgram('G-2020V-CAL-123')
+    assert gp.is_sv
+    gp = GeminiProgram('G-2020F-CAL-123')
+    assert gp.is_ft
+    gp = GeminiProgram('G-2020S-CAL-123')
+    assert gp.is_ds
+
+    gp = GeminiProgram('GN-2020A-SV-123')
+    assert gp.is_sv
+    gp = GeminiProgram('GN-2020A-FT-123')
+    assert gp.is_ft
+    gp = GeminiProgram('GN-2020A-DS-123')
+    assert gp.is_ds
+
+    gp = GeminiProgram('GN-CAL20200123')
+    assert gp.is_cal
+    gp = GeminiProgram('GN-ENG20200123')
+    assert gp.is_eng
 
 
 if __name__ == "__main__":
