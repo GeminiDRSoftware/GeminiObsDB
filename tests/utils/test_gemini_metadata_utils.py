@@ -48,6 +48,10 @@ def test_program_ids():
     gp = GeminiProgram('GN-ENG20200123')
     assert gp.is_eng
 
+    # test trim of leading 0s for old-style program IDs
+    gp = GeminiProgram('GN-2020A-DS-0123')
+    assert gp.program_id == 'GN-2020A-DS-123'
+
 
 if __name__ == "__main__":
     pytest.main()
