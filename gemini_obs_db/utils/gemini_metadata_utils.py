@@ -73,7 +73,7 @@ UT_DATETIME_SECS_EPOCH = datetime.datetime(2000, 1, 1, 0, 0, 0)
 
 # This re matches a program id like GN-CAL20091020 with no groups
 calengre_old = r'G[NS]-(?:(?:CAL)|(?:ENG))20\d\d[01]\d[0123]\d'
-calengre = r'G-20\d\d[ABFDLWVSX]-(?:(?:CAL)|(?:ENG))[01]\d[0123]\d'
+calengre = r'G-20\d\d[ABFDLWVSX]-(?:(?:CAL)|(?:ENG))-[01]\d[0123]\d'
 # This re matches a program id like GN-2009A-Q-23 with no groups
 scire = r'G([NS]?)-20\d\d[ABFDLWVSX]-[A-Z]*-\d*'
 
@@ -884,7 +884,7 @@ def percentilestring(num: int, type: str) -> str:
 # With 3 groups - program_id, obsnum, dlnum
 # This also allows for an optional -blah on the end (processed biases etc)
 
-dlcre = re.compile(r'^((?:%s)|(?:%s)|(?:%s))-(\d*)-(\d*)(?:-(\w*))?$' % (calengre, scire, calengre_old))
+dlcre = re.compile(r'^((?:%s)|(?:%s)|(?:%s))-(\d*)-(\d*)(?:-([-\w]*))?$' % (calengre, scire, calengre_old))
 
 
 class GeminiDataLabel:

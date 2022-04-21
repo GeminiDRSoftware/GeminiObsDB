@@ -1,3 +1,12 @@
+1.0.13
+======
+
+gemini_metadata_utils
+^^^^^^^^^^^^^^^^^^^^^
+
+- Allowing for - delimited extensions like QL-FLAT
+
+
 1.0.10
 ======
 
@@ -5,6 +14,7 @@ file_parser
 ^^^^^^^^^^^
 
 - Using lambda for descriptor accesses so they happen inside the _try_or_none error handler
+- Fixes to failure logging to skip the log if we were not provided with a log instance
 
 1.0.9
 =====

@@ -244,7 +244,8 @@ class AstroDataFileParser(FileParser):
             aofold = self.ad.phu.get('AOFOLD')
             return aofold == 'IN'
         except Exception:
-            self._log("Unable to read AOFOLD header")
+            if self._log:
+                self._log.warning("Unable to read AOFOLD header")
         return False
 
     def airmass(self) -> Union[float, None]:
@@ -272,7 +273,7 @@ class AstroDataFileParser(FileParser):
                     airmass = None
         except (TypeError, AttributeError, KeyError, ValueError, IndexError) as airmasserr:
             if self._log:
-                self._log.warn("Unable to parse airmass: %s" % airmasserr)
+                self._log.warning("Unable to parse airmass: %s" % airmasserr)
             airmass = None
         return airmass
 
@@ -351,7 +352,8 @@ class AstroDataFileParser(FileParser):
         # Knock illegal characters out of filter names. eg NICI %s.
         # Spaces to underscores.
         try:
-            filter_string = self.ad.filter_name(pretty=True)
+            filter_string = self._try_or_none(lambda: self.ad.filter_name(pretty=True),
+                                              "Unable to get filter name from header")
             if filter_string:
                 filter_string = filter_string.replace('%', '').replace(' ', '_')
             return filter_string
@@ -617,7 +619,8 @@ class AlopekeZorroFileParser(AstroDataFileParser):
             try:
                 ra = self.ad.ra()
             except Exception:
-                self._log.warning(f"Final ra fallback, unable to determine ra for file {self.ad.filename}")
+                if self._log and hasattr(self.ad, "filename"):
+                    self._log.warning(f"Final ra fallback, unable to determine ra for file {self.ad.filename}")
         if type(ra) is str:
             ra = ratodeg(ra)
         if ra is not None and (ra > 360.0 or ra < 0.0):
@@ -640,7 +643,8 @@ class AlopekeZorroFileParser(AstroDataFileParser):
             try:
                 dec = self.ad.dec()
             except Exception:
-                self._log.warning(f"Final dec fallback, unable to determine dec for file {self.ad.filename}")
+                if self._log and hasattr(self.ad, "filename"):
+                    self._log.warning(f"Final dec fallback, unable to determine dec for file {self.ad.filename}")
         if type(dec) is str:
             dec = dectodeg(dec)
         if dec is not None and (dec > 90.0 or dec < -90.0):
