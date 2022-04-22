@@ -1,3 +1,55 @@
+1.0.13
+======
+
+gemini_metadata_utils
+^^^^^^^^^^^^^^^^^^^^^
+
+- Allowing for - delimited extensions like QL-FLAT
+
+
+1.0.10
+======
+
+file_parser
+^^^^^^^^^^^
+
+- Using lambda for descriptor accesses so they happen inside the _try_or_none error handler
+- Fixes to failure logging to skip the log if we were not provided with a log instance
+
+1.0.9
+=====
+
+gemini_metadata_utils
+^^^^^^^^^^^^^^^^^^^^^
+
+- using astropy for string parsing of RA/DEC coordinates
+
+1.0.8
+=====
+
+file_parser
+^^^^^^^^^^^
+
+- WCS first, then fallback to repair WCS, then fallback to ra() or dec()
+- smarter about unexpected text format RA
+- error reporting for really bad RA/DEC values
+
+1.0.6
+=====
+
+gemini_metadata_utils.py
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+- fix parsing of observation number from new regex
+
+1.0.5
+=====
+
+gemini_obs_db
+^^^^^^^^^^^^^
+
+- added pre-ping for Postgres connections so we don't use an expired connection
+
 1.0.4
 =====
 
