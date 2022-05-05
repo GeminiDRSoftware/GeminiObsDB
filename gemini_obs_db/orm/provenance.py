@@ -12,6 +12,7 @@ __all__ = ["Provenance", "ProvenanceHistory", "ingest_provenance"]
 # from .diskfile import DiskFile
 
 PROVENANCE_DATE_FORMAT = "%Y-%m-%d %H:%M:%S.%f"
+PROVENANCE_DATE_FORMAT_ISO = "%Y-%m-%dT%H:%M:%S.%f"
 
 
 class Provenance(Base):
@@ -114,6 +115,11 @@ def ingest_provenance(diskfile):
     -------
     None
     """
+    def _parse_timestamp(ts_str):
+        if 'T' in ts_str:
+            return datetime.strptime(timestamp_str, PROVENANCE_DATE_FORMAT_ISO)
+        else:
+            return datetime.strptime(timestamp_str, PROVENANCE_DATE_FORMAT)
     ad = diskfile.ad_object
     if hasattr(ad, 'PROVENANCE'):
         provenance = ad.PROVENANCE
@@ -121,7 +127,7 @@ def ingest_provenance(diskfile):
             prov_list = list()
             for prov in provenance:
                 timestamp_str = prov[0]
-                timestamp = datetime.strptime(timestamp_str, PROVENANCE_DATE_FORMAT)
+                timestamp = _parse_timestamp(timestamp_str)
                 filename = prov[1]
                 md5 = prov[2]
                 provenance_added_by = prov[3]
@@ -135,8 +141,8 @@ def ingest_provenance(diskfile):
             for ph in provenance_history:
                 timestamp_start_str = ph[0]
                 timestamp_stop_str = ph[1]
-                timestamp_start = datetime.strptime(timestamp_start_str, PROVENANCE_DATE_FORMAT)
-                timestamp_stop = datetime.strptime(timestamp_stop_str, PROVENANCE_DATE_FORMAT)
+                timestamp_start = _parse_timestamp(timestamp_start_str)
+                timestamp_stop = _parse_timestamp(timestamp_stop_str)
                 primitive = ph[2]
                 args = ph[3]
                 hist = ProvenanceHistory(timestamp_start, timestamp_stop, primitive, args)

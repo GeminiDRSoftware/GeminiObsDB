@@ -894,7 +894,11 @@ def percentilestring(num: int, type: str) -> str:
 # With 3 groups - program_id, obsnum, dlnum
 # This also allows for an optional -blah on the end (processed biases etc)
 
-dlcre = re.compile(r'^((?:%s)|(?:%s)|(?:%s))-(\d*)-(\d*)(?:-([-\w]*))?$' % (calengre, scire, calengre_old))
+dlcre = re.compile(r'^(?P<progid>(?:%s)|(?:%s)|(?:%s))-(?P<obsid>\d*)-(?P<dlid>\d*)(?:-(?P<extn>[-\w]*))?$' % (calengre, scire, calengre_old))
+# dlcre = re.compile(r'^((?:%s)|(?:%s)|(?:%s))-(\d*)-(\d*)(?:-([-\w]*))?$' %\
+#                    (r'^G[NS]?-20\d\d[ABFDLWVSX]-((?:CAL)|(?:ENG))-(?:[A-Za-z0-9_]+-)?\d+',
+#                     r"^(?:G[NS]?)-(?:20\d\d([A-Z]))-(?:Q|C|SV|QS|DD|LP|FT|DS|ENG|CAL)-(?:\d+)",
+#                     r'G[NS]-((?:CAL)|(?:ENG))20\d\d[01]\d[0123]\d'))
 
 
 class GeminiDataLabel:
@@ -949,10 +953,10 @@ class GeminiDataLabel:
         """
         dlm = dlcre.match(self.datalabel)
         if dlm:
-            self.projectid = dlm.group(1)
-            self.obsnum = dlm.group(3)
-            self.dlnum = dlm.group(4)
-            self.extension = dlm.group(5)
+            self.projectid = dlm.group('progid')
+            self.obsnum = dlm.group('obsid')
+            self.dlnum = dlm.group('dlid')
+            self.extension = dlm.group('extn')
             self.project = GeminiProgram(self.projectid)
             self.observation_id = '%s-%s' % (self.projectid, self.obsnum)
             self.datalabel_noextension = '%s-%s-%s' % (self.projectid, self.obsnum, self.dlnum)
