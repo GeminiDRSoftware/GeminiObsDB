@@ -73,7 +73,7 @@ UT_DATETIME_SECS_EPOCH = datetime.datetime(2000, 1, 1, 0, 0, 0)
 
 # This re matches a program id like GN-CAL20091020 with no groups
 calengre_old = r'G[NS]-((?:CAL)|(?:ENG))20\d\d[01]\d[0123]\d'
-calengre = r'^G[NS]?-20\d\d[ABFDLWVSX]-((?:CAL)|(?:ENG))-([A-Za-z0-9_]+-)?\d+'
+calengre = r'^G[NS]?-20\d\d[ABFDLWVSX]-((?:CAL)|(?:ENG))-([A-Za-z0-9_]*[A-Za-z_]+[A-Za-z0-9_]*-)?\d+'
 
 # G-YYYYT-M-BNNN  T is one of:
 #  A/B - regular semester program
