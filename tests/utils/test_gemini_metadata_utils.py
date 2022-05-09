@@ -1,7 +1,7 @@
 import pytest
 
 from gemini_obs_db.utils.gemini_metadata_utils import ratodeg, ratodeg_old, dectodeg, dectodeg_old, GeminiProgram, \
-    GeminiDataLabel
+    GeminiDataLabel, GeminiObservation
 
 
 def test_ratodeg():
@@ -53,6 +53,21 @@ def test_program_ids():
     # test trim of leading 0s for old-style program IDs
     gp = GeminiProgram('GN-2020A-DS-0123')
     assert gp.program_id == 'GN-2020A-DS-123'
+
+    gp = GeminiProgram('GN-2022A-ENG-51')
+    assert(gp.is_eng)
+    assert(gp.valid)
+
+
+def test_obsid_as_programid():
+    gp = GeminiProgram('GN-2022A-ENG-51-152')
+    assert not gp.valid
+
+
+def test_obsids():
+    obs = GeminiObservation('GN-2022A-ENG-51-152')
+    assert(obs.valid)
+    assert(obs.observation_id == 'GN-2022A-ENG-51-152')
 
 
 def test_url_parsing_helpers():
