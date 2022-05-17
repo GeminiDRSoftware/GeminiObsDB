@@ -1,3 +1,12 @@
+1.0.14
+======
+
+gemini_metadata_utils
+^^^^^^^^^^^^^^^^^^^^^
+
+- Fix for obsid parsing that caused metadata checks to incorrectly pass
+
+
 1.0.13
 ======
 
