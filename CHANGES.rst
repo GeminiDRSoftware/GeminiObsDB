@@ -1,4 +1,4 @@
-1.0.14
+1.0.21
 ======
 
 gemini_metadata_utils
