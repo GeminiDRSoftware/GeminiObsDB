@@ -91,7 +91,7 @@ scire = r"^(G[NS]?)-(20\d\d([A-Z]))-(Q|C|SV|QS|DD|LP|FT|DS|ENG|CAL)-(\d+)"
 progre = r'(?:^%s$)|(?:^%s$)|(?:^%s$)' % (calengre, scire, calengre_old)
 
 # This matches an observation id with the project id and obsnum as groups
-obsre = r'((?:^%s)|(?:^%s)|(?:^%s))-(\d*)$' % (calengre, scire, calengre_old)
+obsre = r'((?:^%s)|(?:^%s)|(?:^%s))-(?P<obsid>\d*)$' % (calengre, scire, calengre_old)
 
 # Here are some lists of defined detector settings
 gemini_gain_settings = ('high', 'low')
@@ -999,7 +999,7 @@ class GeminiObservation:
             if match:
                 self.observation_id = observation_id
                 self.program = GeminiProgram(match.group(1))
-                self.obsnum = match.group(3)
+                self.obsnum = match.group('obsid')
                 self.valid = True
             else:
                 self.observation_id = ''
