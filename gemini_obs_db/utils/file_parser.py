@@ -775,8 +775,6 @@ class IGRINSFileParser(AstroDataFileParser):
         :return:  str name of telescope
         """
         retval = gemini_telescope(self.ad.telescope())
-        print('IGRINS first pass telescope is %s' % retval)
-        print('IGRINS ad telescope is %s' % self.ad.telescope())
         if retval is None and self.ad.telescope() is not None and ' ' in self.ad.telescope():
             return gemini_telescope(self.ad.telescope().replace(' ', '-'))
 
@@ -808,7 +806,7 @@ class GMOSFileParser(AstroDataFileParser):
 
 
 def build_parser(ad, log) -> FileParser:
-    if 'GMOS' in ad.tags:
+    if hasattr(ad, 'tags') and 'GMOS' in ad.tags:
         return GMOSFileParser(ad, log)
     try:
         if ad.instrument() is not None:
