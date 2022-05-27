@@ -329,7 +329,7 @@ class AstroDataFileParser(FileParser):
     def disperser(self) -> Union[str, None]:
         # Need to remove invalid characters in disperser names, eg gnirs has
         # slashes
-        disperser = self._try_or_none(lambda: self.ad.disperser(), "Unable to read disperser information from datafile")
+        disperser = self._try_or_none(lambda: self.ad.disperser(pretty=True), "Unable to read disperser information from datafile")
         if disperser is not None:
             return disperser.replace('/', '_')
         return None
