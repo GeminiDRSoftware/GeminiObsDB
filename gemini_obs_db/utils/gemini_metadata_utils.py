@@ -379,11 +379,12 @@ def ratodeg(string: str) -> float:
         return float(string)
     except:
         # ok, fall back to smart parsing
-        try:
-            return Angle(string).degree
-        except:
-            # unparseable
-            pass
+        pass
+    try:
+        return Angle("%s %s" % (string, "hours")).degree
+    except:
+        # unparseable
+        pass
     return None
 
 
@@ -426,7 +427,6 @@ def ratodeg_old(string: str) -> float:
     return degs
 
 
-
 def dectodeg(string: str) -> float:
     """
     A utility function that recognises a Dec: [+-]DD:MM:SS.sss
@@ -437,12 +437,13 @@ def dectodeg(string: str) -> float:
         if value >= -90.0 and value <= 90.0:
             return value
     except:
-        try:
-            a = Angle(string)
-            return a.degree
-        except:
-            # unparseable
-            return None
+        pass
+    try:
+        a = Angle("%s %s" % (string, "degrees"))
+        return a.degrees
+    except:
+        # unparseable
+        return None
 
 
 # deprecated, used by dectodeg_old
