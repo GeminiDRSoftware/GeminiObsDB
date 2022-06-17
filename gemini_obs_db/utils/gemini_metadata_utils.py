@@ -156,20 +156,16 @@ gemini_instrument_dict = {
     'phoenix': 'PHOENIX',
     'texes': 'TEXES',
     'trecs': 'TReCS',
-    'nici': 'NICI',
-    'igrins': 'IGRINS',
-    'gsaoi': 'GSAOI',
     'oscir': 'OSCIR',
     'f2': 'F2',
     'gpi': 'GPI',
-    'abu': 'ABU',
-    'bhros': 'bHROS',
     'hrwfs': 'hrwfs',
     'flamingos': 'FLAMINGOS',
     'cirpass': 'CIRPASS',
     'graces': 'GRACES',
     'alopeke': 'ALOPEKE',
-    'zorro': 'ZORRO'
+    'zorro': 'ZORRO',
+    'maroon-x': 'MAROON-X'
 }
 
 
@@ -440,7 +436,10 @@ def dectodeg(string: str) -> float:
         pass
     try:
         a = Angle("%s %s" % (string, "degrees"))
-        return a.degrees
+        if hasattr(a, "degrees"):
+            return a.degrees
+        else:
+            return a.value
     except:
         # unparseable
         return None

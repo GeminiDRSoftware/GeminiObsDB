@@ -20,6 +20,7 @@ gemini_metadata_utils
 ^^^^^^^^^^^^^^^^^^^^^
 
 - Fix for obsid parsing that caused metadata checks to incorrectly pass
+- Fix for ra/dec parsing to handle additional strings
 
 
 1.0.13
