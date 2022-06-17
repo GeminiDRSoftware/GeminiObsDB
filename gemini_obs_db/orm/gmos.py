@@ -40,6 +40,7 @@ class Gmos(Base):
     filter_name = Column(Text, index=True)
     detector_x_bin = Column(Integer, index=True)
     detector_y_bin = Column(Integer, index=True)
+    array_name = Column(Text, index=True)
     amp_read_area  = Column(Text, index=True)
     read_speed_setting = Column(READ_SPEED_SETTING_ENUM, index=True)
     gain_setting = Column(GAIN_SETTING_ENUM, index=True)
@@ -82,6 +83,7 @@ class Gmos(Base):
         try:
             self.detector_x_bin = ad.detector_x_bin()
             self.detector_y_bin = ad.detector_y_bin()
+            self.array_name = '+'.join(ad.array_name())
             self.amp_read_area = '+'.join(ad.amp_read_area())
 
             gain_setting = ad.gain_setting()

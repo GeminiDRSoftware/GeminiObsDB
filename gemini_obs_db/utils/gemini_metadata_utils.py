@@ -156,20 +156,16 @@ gemini_instrument_dict = {
     'phoenix': 'PHOENIX',
     'texes': 'TEXES',
     'trecs': 'TReCS',
-    'nici': 'NICI',
-    'igrins': 'IGRINS',
-    'gsaoi': 'GSAOI',
     'oscir': 'OSCIR',
     'f2': 'F2',
     'gpi': 'GPI',
-    'abu': 'ABU',
-    'bhros': 'bHROS',
     'hrwfs': 'hrwfs',
     'flamingos': 'FLAMINGOS',
     'cirpass': 'CIRPASS',
     'graces': 'GRACES',
     'alopeke': 'ALOPEKE',
-    'zorro': 'ZORRO'
+    'zorro': 'ZORRO',
+    'maroon-x': 'MAROON-X'
 }
 
 
@@ -379,11 +375,12 @@ def ratodeg(string: str) -> float:
         return float(string)
     except:
         # ok, fall back to smart parsing
-        try:
-            return Angle(string).degree
-        except:
-            # unparseable
-            pass
+        pass
+    try:
+        return Angle("%s %s" % (string, "hours")).degree
+    except:
+        # unparseable
+        pass
     return None
 
 
@@ -426,7 +423,6 @@ def ratodeg_old(string: str) -> float:
     return degs
 
 
-
 def dectodeg(string: str) -> float:
     """
     A utility function that recognises a Dec: [+-]DD:MM:SS.sss
@@ -437,12 +433,16 @@ def dectodeg(string: str) -> float:
         if value >= -90.0 and value <= 90.0:
             return value
     except:
-        try:
-            a = Angle(string)
-            return a.degree
-        except:
-            # unparseable
-            return None
+        pass
+    try:
+        a = Angle("%s %s" % (string, "degrees"))
+        if hasattr(a, "degrees"):
+            return a.degrees
+        else:
+            return a.value
+    except:
+        # unparseable
+        return None
 
 
 # deprecated, used by dectodeg_old
