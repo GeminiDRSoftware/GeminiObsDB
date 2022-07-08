@@ -1,3 +1,18 @@
+1.0.22
+======
+
+file_parser
+^^^^^^^^^^^
+
+- Fix disperser to parse with pretty=True
+- Handle files with missing tags cleanly
+
+gmos
+^^^^
+
+- Adding array_name parameter to facilitate BPM matching logic
+
+
 1.0.21
 ======
 
@@ -5,6 +20,7 @@ gemini_metadata_utils
 ^^^^^^^^^^^^^^^^^^^^^
 
 - Fix for obsid parsing that caused metadata checks to incorrectly pass
+- Fix for ra/dec parsing to handle additional strings
 
 
 1.0.13

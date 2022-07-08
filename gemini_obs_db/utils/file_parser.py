@@ -253,7 +253,7 @@ class AstroDataFileParser(FileParser):
         try:
             airmass = self.ad.airmass()
             airmass = float(airmass) if isinstance(airmass, str) else airmass
-            if airmass > 10:
+            if airmass is not None and airmass > 10:
                 if self.elevation() is not None:
                     try:
                         # use secant(90-elevation) for airmass, converting to radians for numpy
@@ -329,7 +329,7 @@ class AstroDataFileParser(FileParser):
     def disperser(self) -> Union[str, None]:
         # Need to remove invalid characters in disperser names, eg gnirs has
         # slashes
-        disperser = self._try_or_none(lambda: self.ad.disperser(), "Unable to read disperser information from datafile")
+        disperser = self._try_or_none(lambda: self.ad.disperser(pretty=True), "Unable to read disperser information from datafile")
         if disperser is not None:
             return disperser.replace('/', '_')
         return None
@@ -775,8 +775,6 @@ class IGRINSFileParser(AstroDataFileParser):
         :return:  str name of telescope
         """
         retval = gemini_telescope(self.ad.telescope())
-        print('IGRINS first pass telescope is %s' % retval)
-        print('IGRINS ad telescope is %s' % self.ad.telescope())
         if retval is None and self.ad.telescope() is not None and ' ' in self.ad.telescope():
             return gemini_telescope(self.ad.telescope().replace(' ', '-'))
 
@@ -808,7 +806,7 @@ class GMOSFileParser(AstroDataFileParser):
 
 
 def build_parser(ad, log) -> FileParser:
-    if 'GMOS' in ad.tags:
+    if hasattr(ad, 'tags') and 'GMOS' in ad.tags:
         return GMOSFileParser(ad, log)
     try:
         if ad.instrument() is not None:
