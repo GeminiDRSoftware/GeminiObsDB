@@ -308,14 +308,16 @@ def gemini_date(string: str, as_datetime: bool = False, offset: timedelta = ZERO
         None.
 
     """
+    suffix = ''
     if string.endswith('Z'):
         # explicit request for UTC, set offset to zero
         string = string[:-1]
         offset = ZERO_OFFSET
+        suffix = 'Z'
 
-    dt_to_text = lambda x: x.date().strftime('%Y%m%d')
-    dt_to_text_full = lambda x: x.strftime('%Y-%m-%dT%H:%M:%S')
-    dt_to_text_short = lambda x: x.strftime('%Y%m%dT%H%M%S')
+    dt_to_text = lambda x: x.date().strftime('%Y%m%d') + suffix
+    dt_to_text_full = lambda x: x.strftime('%Y-%m-%dT%H:%M:%S') + suffix
+    dt_to_text_short = lambda x: x.strftime('%Y%m%dT%H%M%S') + suffix
 
     if string in {'today', 'tonight'}:
         string = get_fake_ut()
