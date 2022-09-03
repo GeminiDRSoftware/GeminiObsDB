@@ -308,6 +308,11 @@ def gemini_date(string: str, as_datetime: bool = False, offset: timedelta = ZERO
         None.
 
     """
+    if string.endswith('Z'):
+        # explicit request for UTC, set offset to zero
+        string = string[:-1]
+        offset = ZERO_OFFSET
+
     dt_to_text = lambda x: x.date().strftime('%Y%m%d')
     dt_to_text_full = lambda x: x.strftime('%Y-%m-%dT%H:%M:%S')
     dt_to_text_short = lambda x: x.strftime('%Y%m%dT%H%M%S')
