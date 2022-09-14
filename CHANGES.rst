@@ -1,3 +1,11 @@
+1.0.23
+======
+
+gemini_metadata_utils
+^^^^^^^^^^^^^^^^^^^^^
+
+- Support for Z date/time suffix to specify UTC
+
 1.0.22
 ======
 

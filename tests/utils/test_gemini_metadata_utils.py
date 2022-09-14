@@ -1,23 +1,29 @@
+import os
+import time
+
 import pytest
 
+from gemini_obs_db import db_config
 from gemini_obs_db.utils.gemini_metadata_utils import ratodeg, ratodeg_old, dectodeg, dectodeg_old, GeminiProgram, \
-    GeminiDataLabel, GeminiObservation
+    GeminiDataLabel, GeminiObservation, gemini_date, get_date_offset
 
 
 def test_ratodeg():
     ra_str = '03:48:30.113'
     ra = ratodeg(ra_str)
     ra_old = ratodeg_old(ra_str)
-    assert pytest.approx(ra, 57.12547083333333)
-    assert pytest.approx(ra_old, 57.12547083333333)
+    assert abs(ra-ra_old) < 0.01
+    assert 57.1 < ra < 57.2
+    assert 57.1 < ra_old < 57.2
 
 
 def test_dectodeg():
     dec_str = '+24:20:43.00'
     dec = dectodeg(dec_str)
     dec_old = dectodeg_old(dec_str)
-    assert(pytest.approx(dec, 24.345277777777778))
-    assert(pytest.approx(dec_old, 24.345277777777778))
+    assert abs(dec-dec_old) < 0.01
+    assert 24.3 < dec < 24.4
+    assert 24.3 < dec_old < 24.4
 
 
 def test_program_ids():
@@ -77,6 +83,62 @@ def test_url_parsing_helpers():
     assert(dl.obsnum == "5")
     assert(dl.datalabel == "GN-CAL20220502-5-001")
     assert(dl.dlnum == "001")
+
+
+def test_get_date_hawaii(monkeypatch):
+    monkeypatch.setattr(db_config, 'use_utc', False)
+    dt = gemini_date("20220404", offset=get_date_offset(), as_datetime=True)
+    assert(dt.year == 2022)
+    assert(dt.month == 4)
+    assert(dt.day == 4)
+    assert(dt.hour == 0)
+
+
+def test_get_date_chile(monkeypatch):
+    save_tz = None
+    if 'TZ' in os.environ:
+        save_tz = os.environ['TZ']
+    os.environ['TZ'] = 'Chile/Santiago'
+    time.tzset()
+    monkeypatch.setattr(db_config, 'use_utc', False)
+    dt = gemini_date("20220404", offset=get_date_offset(), as_datetime=True)
+    assert(dt.year == 2022)
+    assert(dt.month == 4)
+    assert(dt.day == 3)
+    assert(dt.hour == 14)
+    if save_tz:
+        os.environ['TZ'] = save_tz
+    else:
+        os.environ.unsetenv('TZ')
+    time.tzset()
+
+
+def test_get_date_hawaii_utc(monkeypatch):
+    monkeypatch.setattr(db_config, 'use_utc', False)
+    dt = gemini_date("20220404Z", offset=get_date_offset(), as_datetime=True)
+    assert(dt.year == 2022)
+    assert(dt.month == 4)
+    assert(dt.day == 4)
+    assert(dt.hour == 0)
+
+
+def test_get_date_chile_utc(monkeypatch):
+    save_tz = None
+    if 'TZ' in os.environ:
+        save_tz = os.environ['TZ']
+    os.environ['TZ'] = 'Chile/Santiago'
+    time.tzset()
+    monkeypatch.setattr(db_config, 'use_utc', False)
+    dt = gemini_date("20220404Z", offset=get_date_offset(), as_datetime=True)
+    assert(dt.year == 2022)
+    assert(dt.month == 4)
+    assert(dt.day == 4)
+    assert(dt.hour == 0)
+    if save_tz:
+        os.environ['TZ'] = save_tz
+    else:
+        os.environ.unsetenv('TZ')
+    time.tzset()
 
 
 if __name__ == "__main__":
