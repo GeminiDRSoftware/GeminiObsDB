@@ -9,7 +9,7 @@ from .header import Header
 from . import Base
 
 # Enumerated column types
-READ_SPEED_SETTINGS = ['slow', 'medium', 'fast', 'standard']
+READ_SPEED_SETTINGS = ['slow', 'medium', 'fast', 'standard', 'unknown']
 READ_SPEED_SETTING_ENUM = Enum(*READ_SPEED_SETTINGS, name='ghost_read_speed_setting')
 
 GAIN_SETTINGS = ['low', 'high', 'standard']
@@ -161,6 +161,7 @@ class Ghost(Base):
     header_id = Column(Integer, ForeignKey('header.id'), nullable=False, index=True)
     header = relation(Header, order_by=id)
     arm = Column(Text, index=True)
+    want_before_arc = Column(Boolean)
     disperser = Column(Text, index=True)
     filter_name = Column(Text, index=True)
     detector_name = Column(Text, index=True)
@@ -223,6 +224,7 @@ class Ghost(Base):
             Astrodata object to read Ghost information from
         """
         self.arm = ad.arm()
+        self.want_before_arc = ad.want_before_arc()
         self.disperser = ad.disperser()
         self.filter_name = ad.filter_name()
 

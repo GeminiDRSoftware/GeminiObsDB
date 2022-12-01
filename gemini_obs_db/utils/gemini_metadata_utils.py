@@ -153,6 +153,7 @@ gemini_instrument_dict = {
     'gmos-s': 'GMOS-S',
     'michelle': 'michelle',
     'gnirs': 'GNIRS',
+    'ghost': 'GHOST',
     'phoenix': 'PHOENIX',
     'texes': 'TEXES',
     'trecs': 'TReCS',

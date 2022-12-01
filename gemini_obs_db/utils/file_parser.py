@@ -805,11 +805,46 @@ class GMOSFileParser(AstroDataFileParser):
             if 'NODANDSHUFFLE' in self.ad.tags else "Classic"
 
 
+class GHOSTFileParser(AstroDataFileParser):
+    def dedictify(self, value, sum=False, min=False):
+        arm = self.ad.arm()
+        if isinstance(value, dict):
+            if arm is not None:
+                return value.get(arm, None)
+            else:
+                if sum:
+                    retval = 0.0
+                    for k, v in value.items():
+                        retval += v
+                    return retval
+                if min:
+                    retval = None
+                    for k, v in value.items():
+                        if retval is None or (v is not None and v<retval):
+                            retval = v
+                    return retval
+
+    def exposure_time(self) -> Union[float, None]:
+        return self.dedictify(self.ad.exposure_time(), sum=True)
+
+    def detector_binning(self) -> str:
+        dvx = self.dedictify(self.ad.detector_x_bin(), min=True)
+        dvy = self.dedictify(self.ad.detector_y_bin(), min=True)
+        if (dvx is not None) and (dvy is not None):
+            return "%dx%d" % (dvx, dvy)
+        return None
+
+    def gain_setting(self):
+        return self.dedictify(self.ad.gain_setting())
+
+
 def build_parser(ad, log) -> FileParser:
     if hasattr(ad, 'tags') and 'GMOS' in ad.tags:
         return GMOSFileParser(ad, log)
     try:
         if ad.instrument() is not None:
+            if ad.instrument().upper() == 'GHOST':
+                return GHOSTFileParser(ad, log)
             if ad.instrument().upper() == 'ALOPEKE':
                 return AlopekeZorroFileParser(ad, default_telescope='Gemini-North')
             elif ad.instrument().upper() == 'ZORRO':
