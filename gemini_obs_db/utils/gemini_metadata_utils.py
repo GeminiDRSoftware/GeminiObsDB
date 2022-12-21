@@ -94,7 +94,7 @@ progre = r'(?:^%s$)|(?:^%s$)|(?:^%s$)' % (calengre, scire, calengre_old)
 obsre = r'((?:^%s)|(?:^%s)|(?:^%s))-(?P<obsid>\d*)$' % (calengre, scire, calengre_old)
 
 # Here are some lists of defined detector settings
-gemini_gain_settings = ('high', 'low')
+gemini_gain_settings = ('high', 'low', 'standard')
 gemini_readspeed_settings = ('fast', 'slow')
 gemini_welldepth_settings = ('Shallow', 'Deep', 'Invalid')
 gemini_readmode_settings = ('Classic',
@@ -153,6 +153,7 @@ gemini_instrument_dict = {
     'gmos-s': 'GMOS-S',
     'michelle': 'michelle',
     'gnirs': 'GNIRS',
+    'ghost': 'GHOST',
     'phoenix': 'PHOENIX',
     'texes': 'TEXES',
     'trecs': 'TReCS',

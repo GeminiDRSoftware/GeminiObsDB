@@ -1,3 +1,12 @@
+1.0.25
+======
+
+ghost
+^^^^^
+
+- Initial support for GHOST in ORM mappings, with per arm descriptors where neede
+
+
 1.0.23
 ======
 
