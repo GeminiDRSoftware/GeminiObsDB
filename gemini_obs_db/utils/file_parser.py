@@ -815,7 +815,13 @@ class GHOSTFileParser(AstroDataFileParser):
                 if sum:
                     retval = 0.0
                     for k, v in value.items():
-                        retval += v
+                        if v is not None:
+                            if isinstance(v, str):
+                                try:
+                                    v = float(v)
+                                except:
+                                    v = 0.0
+                            retval += v
                     return retval
                 if min:
                     retval = None
