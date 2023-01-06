@@ -24,6 +24,7 @@ z_staging_area = ''
 storage_root = os.getenv('STORAGE_ROOT', '')
 sqlite_db_path = join(storage_root, 'gemini_obs_db.db')
 database_url = os.getenv('GEMINI_OBS_DB_URL', 'sqlite:///' + sqlite_db_path)
+database_debug = False  # set to True to enable SQLAlchemy debugging
 
 # These two are only used if we are using a Postgres database
 # However, we define them anyway so they are available for import

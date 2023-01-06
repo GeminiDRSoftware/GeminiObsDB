@@ -12,9 +12,9 @@ from gemini_obs_db import db_config as dbc
 
 if dbc.database_url.startswith('postgresql://'):
     args = {'pool_size': dbc.postgres_database_pool_size, 'max_overflow': dbc.postgres_database_max_overflow,
-            'echo': True, 'pool_pre_ping': True}
+            'echo': dbc.database_debug, 'pool_pre_ping': True}
 else:
-    args = {'echo': False}
+    args = {'echo': dbc.database_debug}
 pg_db = create_engine(dbc.database_url, **args)
 sessionfactory = sessionmaker(pg_db)
 
@@ -41,9 +41,9 @@ def sessionfactory():
         _saved_database_url = dbc.database_url
         if dbc.database_url.startswith('postgresql://'):
             args = {'pool_size': dbc.postgres_database_pool_size, 'max_overflow': dbc.postgres_database_max_overflow,
-                    'echo': False}
+                    'echo': dbc.database_debug}
         else:
-            args = {'echo': False}
+            args = {'echo': dbc.database_debug}
         pg_db = create_engine(dbc.database_url, **args)
         _saved_sessionfactory = sessionmaker(pg_db)
     return _saved_sessionfactory()
