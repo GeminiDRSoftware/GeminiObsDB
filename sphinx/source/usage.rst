@@ -3,7 +3,7 @@
 Usage
 =====
 
-The `FitsStorageDB` package provides tools to store a database of
+The `GeminiObsDB` package provides tools to store a database of
 Gemini observation metadata.  This can be used standalone to
 manage an `SQLite` file backed database, or it can be configured
 to use a PostgreSQL Database Server.  If it is run without
