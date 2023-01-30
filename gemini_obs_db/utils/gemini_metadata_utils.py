@@ -878,7 +878,7 @@ def gemini_binning(string: str) -> str:
     for example 1x1, 2x2, 1x4
     """
 
-    valid = '124'
+    valid = '1248'
     a, sep, b = string.partition('x')
 
     return string if (a and b and (a in valid) and (b in valid)) else ''
