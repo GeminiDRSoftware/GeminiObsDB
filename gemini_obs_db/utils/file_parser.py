@@ -831,7 +831,10 @@ class GHOSTFileParser(AstroDataFileParser):
                     return retval
 
     def exposure_time(self) -> Union[float, None]:
-        return self.dedictify(self.ad.exposure_time(), sum=True)
+        et = self.ad.exposure_time()
+        if isinstance(et, dict):
+            return min(self.ad.number_of_exposures()[camera] * self.ad.exposure_time()[camera] for camera in ('blue', 'red'))
+        return super().exposure_time()
 
     def detector_binning(self) -> str:
         dvx = self.dedictify(self.ad.detector_x_bin(), min=True)
