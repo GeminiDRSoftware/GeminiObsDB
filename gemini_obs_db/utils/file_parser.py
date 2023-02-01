@@ -837,14 +837,17 @@ class GHOSTFileParser(AstroDataFileParser):
         return super().exposure_time()
 
     def detector_binning(self) -> str:
-        dvx = self.dedictify(self.ad.detector_x_bin(), min=True)
-        dvy = self.dedictify(self.ad.detector_y_bin(), min=True)
+        dvx = self.dedictify(self.ad.detector_x_bin(), max=True)
+        dvy = self.dedictify(self.ad.detector_y_bin(), max=True)
         if (dvx is not None) and (dvy is not None):
             return "%dx%d" % (dvx, dvy)
         return None
 
     def gain_setting(self):
-        return self.dedictify(self.ad.gain_setting())
+        gs = super().gain_setting()
+        if isinstance(gs, dict) or gs.startswith('{'):
+            return None
+        return gs
 
 
 def build_parser(ad, log) -> FileParser:
