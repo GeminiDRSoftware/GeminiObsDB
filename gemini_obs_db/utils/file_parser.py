@@ -806,7 +806,7 @@ class GMOSFileParser(AstroDataFileParser):
 
 
 class GHOSTFileParser(AstroDataFileParser):
-    def dedictify(self, value, sum=False, min=False):
+    def dedictify(self, value, sum=False, max=False):
         arm = self.ad.arm()
         if isinstance(value, dict):
             if arm is not None:
@@ -823,10 +823,10 @@ class GHOSTFileParser(AstroDataFileParser):
                                     v = 0.0
                             retval += v
                     return retval
-                if min:
+                if max:
                     retval = None
                     for k, v in value.items():
-                        if retval is None or (v is not None and v<retval):
+                        if retval is None or (v is not None and v>retval):
                             retval = v
                     return retval
 
