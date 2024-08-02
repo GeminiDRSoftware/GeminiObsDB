@@ -41,6 +41,8 @@ class Gnirs(Base):
     camera = Column(Text, index=True)
     focal_plane_mask = Column(Text)
     array_name = Column(Text)
+    # This is to support 2024-04 PRISM mechanism issue workarounds
+    prism_motor_steps = Column(Integer)
 
     def __init__(self, header: Header, ad):
         """
