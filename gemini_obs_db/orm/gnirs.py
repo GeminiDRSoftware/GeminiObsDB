@@ -40,6 +40,7 @@ class Gnirs(Base):
     well_depth_setting = Column(WELL_DEPTH_SETTING_ENUM, index=True)
     camera = Column(Text, index=True)
     focal_plane_mask = Column(Text)
+    array_name = Column(Text)
 
     def __init__(self, header: Header, ad):
         """
@@ -82,3 +83,13 @@ class Gnirs(Base):
 
         self.camera = ad.camera()
         self.focal_plane_mask = ad.focal_plane_mask()
+
+        try:
+            an = ad.array_name()
+            if isinstance(an, list):
+                self.array_name = an[0]
+            elif isinstance(an, str):
+                self.array_name = an
+        except:
+            pass
+
